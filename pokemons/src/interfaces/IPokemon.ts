@@ -1,3 +1,5 @@
+import { IPokemonTipo } from "./IPokemonTipo";
+
 export interface IPokemon {
   id: number;
   name: string;
@@ -5,4 +7,5 @@ export interface IPokemon {
   sprites: {
     front_default: string;
   };
+  types: IPokemonTipo[];
 }

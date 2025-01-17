@@ -1,4 +1,4 @@
-import ListaPokemon from "../components/ListaPokemon/ListaPokemons";
+import ListaPokemon from "../../components/ListaPokemon/ListaPokemons";
 
 export default function PaginaInicial() {
   return (

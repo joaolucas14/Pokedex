@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { IPokemon } from "../../paginas/interfaces/IPokemon";
+import { IPokemon } from "../../interfaces/IPokemon";
+import { Link } from "react-router-dom";
 
 export default function ListaPokemon() {
   const [listaPokemon, setListaPokemon] = useState<IPokemon[]>([]);
@@ -48,22 +49,14 @@ export default function ListaPokemon() {
       ) : (
         <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
           {listaPokemon.map((pokemon) => (
-            <div
-              key={pokemon.id}
-              style={{
-                border: "1px solid #ccc",
-                padding: "1rem",
-                width: "150px",
-                textAlign: "center",
-              }}
-            >
+            <div key={pokemon.id}>
               <img
                 src={pokemon.sprites.front_default}
                 alt={pokemon.name}
                 style={{ width: "100px", height: "100px" }}
               />
               <h3>{pokemon.name}</h3>
-              <a href={`/pokemon/${pokemon.id}`}>Ver detalhes</a>
+              <Link to={`/pokemon/${pokemon.id}`}>Ver detalhes</Link>
             </div>
           ))}
         </div>
