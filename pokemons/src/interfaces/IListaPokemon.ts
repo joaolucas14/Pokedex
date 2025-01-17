@@ -1,4 +1,4 @@
-export interface IPokemon {
+export interface IListaPokemon {
   name: string;
   url: string;
 }
