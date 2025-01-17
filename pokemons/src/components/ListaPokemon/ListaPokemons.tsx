@@ -4,33 +4,30 @@ import { IPokemon } from "../../paginas/interfaces/IPokemon";
 
 export default function ListaPokemon() {
   const [listaPokemon, setListaPokemon] = useState<IPokemon[]>([]);
-  const [paginaAtual, setPaginaAtual] = useState(1); // Páginas começam a partir de 1 (para paginar corretamente)
-  const [loading, setLoading] = useState(false); // Estado para controle de carregamento
+  const [paginaAtual, setPaginaAtual] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const pegarPokemons = async (pagina: number) => {
     try {
-      setLoading(true); // Ativa o estado de carregamento
+      setLoading(true);
 
-      // Requisição para obter a lista de Pokémon
       const resposta = await axios.get("https://pokeapi.co/api/v2/pokemon", {
         params: {
-          limit: 10, // Número de Pokémon por requisição
-          offset: (pagina - 1) * 10, // Calcula o deslocamento com base na página
+          limit: 9,
+          offset: (pagina - 1) * 9,
         },
       });
 
-      // Requisição detalhada para cada Pokémon da lista
       const detalhes = await Promise.all(
         resposta.data.results.map((pokemon: IPokemon) =>
           axios.get(pokemon.url).then((res) => res.data)
         )
       );
 
-      // Ordena os Pokémons pelo ID
       detalhes.sort((a, b) => a.id - b.id);
 
-      setListaPokemon(detalhes); // Atualiza a lista de Pokémons
-      setLoading(false); // Desativa o estado de carregamento
+      setListaPokemon(detalhes);
+      setLoading(false);
     } catch (erro) {
       console.error("Erro ao buscar Pokémon:", erro);
       setLoading(false);
@@ -38,12 +35,11 @@ export default function ListaPokemon() {
   };
 
   useEffect(() => {
-    pegarPokemons(paginaAtual); // Carrega os Pokémons da página inicial
+    pegarPokemons(paginaAtual);
   }, [paginaAtual]);
 
-  const carregarMais = () => setPaginaAtual((prev) => prev + 1); // Função para avançar para a próxima página
-  const voltar = () => setPaginaAtual((prev) => (prev > 1 ? prev - 1 : 1)); // Função para voltar para a página anterior
-
+  const carregarMais = () => setPaginaAtual((prev) => prev + 1);
+  const voltar = () => setPaginaAtual((prev) => (prev > 1 ? prev - 1 : 1));
   return (
     <div>
       <h1>Lista de Pokémon</h1>
