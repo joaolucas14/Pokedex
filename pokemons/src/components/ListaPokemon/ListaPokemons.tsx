@@ -27,7 +27,7 @@ export default function ListaPokemon() {
           {listaPokemon.map((pokemon: IPokemon) => (
             <div key={pokemon.id}>
               <img
-                src={pokemon.sprites.front_default}
+                src={pokemon.sprites.other["official-artwork"].front_default}
                 alt={pokemon.name}
                 style={{ width: "100px", height: "100px" }}
               />

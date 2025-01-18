@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 
 import useUnicoPokemon from "../../state/hooks/useUnicoPokemon";
+import "./PaginaPokemon.css";
 
 export default function PaginaPokemon() {
   const id = useParams<{ id: string }>().id;
@@ -15,7 +16,7 @@ export default function PaginaPokemon() {
     return <div>Carregando...</div>;
   }
   return (
-    <>
+    <div>
       <h1>{pokemonDetalhe?.name}</h1>
       <img src={pokemonDetalhe.sprites.front_default} alt="" />
       <ul>
@@ -25,6 +26,6 @@ export default function PaginaPokemon() {
       </ul>
       <Link to="/">Voltar</Link>
       <Link to={`/pokemon/${pokemonDetalhe.id + 1}`}>Próximo</Link>
-    </>
+    </div>
   );
 }
