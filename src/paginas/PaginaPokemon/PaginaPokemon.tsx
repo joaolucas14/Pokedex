@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import useUnicoPokemon from "../../state/hooks/useUnicoPokemon";
 import "./PaginaPokemon.css";
@@ -12,6 +12,7 @@ export default function PaginaPokemon() {
   const { pokemon, buscarPokemonPorId } = useUnicoPokemon();
   const { pokemonDetalhes, buscarDetalhesPokemonPorNome } =
     usePokemonDetalhes();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
@@ -25,8 +26,10 @@ export default function PaginaPokemon() {
     }
   }, [pokemon?.name, buscarDetalhesPokemonPorNome]);
 
-  const descricaoOriginal =
-    pokemonDetalhes?.flavor_text_entries[0]?.flavor_text || "";
+  const descricao =
+    pokemonDetalhes?.flavor_text_entries.find(
+      (entry) => entry.language.name === "en"
+    )?.flavor_text || "Descrição não disponível";
 
   const nomePokemon = pokemon?.name || "";
 
@@ -39,15 +42,23 @@ export default function PaginaPokemon() {
       <img src={pokemon.sprites.front_default} alt="" />
       <div>
         <h2>Descrição</h2>
-        <p>{formatarTexto(descricaoOriginal)}! </p>
+        <p>{formatarTexto(descricao)}! </p>
       </div>
       <ul>
         {pokemon.types.map((type) => (
           <li key={type.type.name}>{type.type.name}</li>
         ))}
       </ul>
-      <Link to="/">Voltar</Link>
-      <Link to={`/pokemon/${pokemon.id + 1}`}>Próximo</Link>
+      <button onClick={() => navigate("/")}>Sair</button>
+      <button
+        disabled={id === "1"}
+        onClick={() => navigate(`/pokemon/${pokemon.id - 1}`)}
+      >
+        Anterior
+      </button>
+      <button onClick={() => navigate(`/pokemon/${pokemon.id + 1}`)}>
+        Próximo
+      </button>
     </div>
   );
 }
