@@ -2,20 +2,25 @@ import { useSetRecoilState } from "recoil";
 import { IPokemon } from "../../interfaces/IPokemon";
 import { http } from "../../api/http";
 import { listaPokemonState, loadingState } from "../atom";
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
 const usePokemons = () => {
   const setListaPokemon = useSetRecoilState(listaPokemonState);
   const setLoading = useSetRecoilState(loadingState);
+  const [filtro, setFiltro] = useState<string>("");
+  const [pokemonsCompletos, setPokemonsCompletos] = useState<IPokemon[]>([]);
+
+  const aplicarFiltro = (filtro: string) => {
+    setFiltro(filtro.toLowerCase());
+  };
 
   const pegarPokemons = useCallback(
-    async (pagina: number) => {
+    async () => {
       setLoading(true);
       try {
         const resposta = await http.get("/pokemon", {
           params: {
-            limit: 9,
-            offset: (pagina - 1) * 9,
+            limit: 1025,
           },
         });
 
@@ -26,17 +31,40 @@ const usePokemons = () => {
         );
 
         detalhes.sort((a, b) => a.id - b.id);
-        setListaPokemon(detalhes);
+
+        setPokemonsCompletos(detalhes);
+        setListaPokemon(detalhes); // Inicialmente, mostramos todos os pokémons carregados
       } catch (erro) {
         console.error("Erro ao buscar Pokémon:", erro);
       } finally {
         setLoading(false);
       }
     },
-    [setListaPokemon, setLoading]
-  ); // Inclua dependências relevantes
+    [setListaPokemon, setLoading] // Dependências para pegar os pokémons
+  );
 
-  return { pegarPokemons };
+  // Filtrando os pokémons com base no filtro
+  const pokemonsFiltrados = (pokemons: IPokemon[]) => {
+    return pokemons.filter((pokemon) =>
+      pokemon.name.toLowerCase().includes(filtro)
+    );
+  };
+
+  // Função para lidar com a paginação após aplicar o filtro
+  const paginarPokemons = (pagina: number, pokemonsFiltrados: IPokemon[]) => {
+    const inicio = (pagina - 1) * 9;
+    const fim = inicio + 9;
+    return pokemonsFiltrados.slice(inicio, fim); // Retorna apenas os 9 Pokémons da página atual
+  };
+
+  return {
+    pegarPokemons,
+    aplicarFiltro,
+    filtro,
+    pokemonsCompletos,
+    pokemonsFiltrados,
+    paginarPokemons,
+  };
 };
 
 export default usePokemons;
