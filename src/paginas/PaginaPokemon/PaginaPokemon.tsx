@@ -6,6 +6,7 @@ import "./PaginaPokemon.css";
 import usePokemonDetalhes from "../../state/hooks/usePokemonDetalhes";
 import TransformarPrimeiraLetraMaiscula from "../../utils/TransformarPrimeiraLetraMaiscula";
 import { formatarTexto } from "../../utils/FormatarTexto";
+import Card from "../../components/Card/Card";
 
 export default function PaginaPokemon() {
   const id = useParams<{ id: string }>().id;
@@ -59,6 +60,12 @@ export default function PaginaPokemon() {
       <button onClick={() => navigate(`/pokemon/${pokemon.id + 1}`)}>
         Próximo
       </button>
+      <Card
+        img={pokemon.sprites.front_default}
+        nome={pokemon.name}
+        descricao={descricao}
+        tipos={pokemon.types.map((type) => type.type.name).join(" | ")}
+      />
     </div>
   );
 }

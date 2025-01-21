@@ -18,14 +18,12 @@ const usePokemons = () => {
     async () => {
       setLoading(true);
       try {
-        // Faz a requisição para pegar os pokémons da página
         const resposta = await http.get("/pokemon", {
           params: {
-            limit: 1000, // Pegamos uma quantidade maior para possibilitar o filtro
+            limit: 1025,
           },
         });
 
-        // Obtenção dos detalhes completos de cada Pokémon
         const detalhes = await Promise.all(
           resposta.data.results.map((pokemon: IPokemon) =>
             http.get(pokemon.url).then((res) => res.data)
@@ -34,7 +32,6 @@ const usePokemons = () => {
 
         detalhes.sort((a, b) => a.id - b.id);
 
-        // Armazenar os pokémons completos no estado
         setPokemonsCompletos(detalhes);
         setListaPokemon(detalhes); // Inicialmente, mostramos todos os pokémons carregados
       } catch (erro) {
