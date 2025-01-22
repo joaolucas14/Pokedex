@@ -1,0 +1,26 @@
+h1 {
+  text-align: center;
+  font-size: 50px;
+}
+
+.titulo_input {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.titulo_input input {
+  width: 30%;
+  height: 30px;
+  border-radius: 15px;
+}
+
+.lista_pokemon {
+  padding: 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  margin: 0px 10px 0px 10px;
+}

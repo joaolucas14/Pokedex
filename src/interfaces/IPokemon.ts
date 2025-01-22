@@ -7,4 +7,6 @@ export interface IPokemon {
   url: string;
   sprites: IPokemonImagem;
   types: IPokemonTipo[];
+  weight: number;
+  height: number;
 }

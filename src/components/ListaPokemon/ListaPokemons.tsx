@@ -3,8 +3,10 @@ import { useRecoilState } from "recoil";
 import { loadingState } from "../../state/atom";
 import usePokemons from "../../state/hooks/usePokemons";
 import { IPokemon } from "../../interfaces/IPokemon";
+import Card from "../Card/Card";
+
+import "./ListaPokemon.css";
 import { Link } from "react-router-dom";
-import TransformarPrimeiraLetraMaiscula from "../../utils/TransformarPrimeiraLetraMaiscula";
 
 export default function ListaPokemon() {
   const [loading] = useRecoilState(loadingState);
@@ -32,37 +34,44 @@ export default function ListaPokemon() {
     if (pokemonsCompletos.length === 0) {
       pegarPokemons();
     }
-  }, [paginaAtual, pegarPokemons, pokemonsCompletos.length]);
+  }, [pegarPokemons, pokemonsCompletos.length]);
 
   const carregarMais = () => setPaginaAtual((prev) => prev + 1);
   const voltar = () => setPaginaAtual((prev) => (prev > 1 ? prev - 1 : 1));
 
   return (
-    <div>
+    <main>
       {loading ? (
         <div>Carregando...</div>
       ) : (
         <>
-          <h1>Lista de Pokémon</h1>
-
-          <input
-            type="text"
-            value={filtroTexto}
-            onChange={aoDigitarFiltro}
-            placeholder="Filtrar por nome"
-          />
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "1rem" }}>
+          <div className="titulo_input">
+            <h1 className="titulo">Lista de Pokémon</h1>
+            <input
+              type="text"
+              value={filtroTexto}
+              onChange={aoDigitarFiltro}
+              placeholder="Filtrar por nome"
+            />
+          </div>
+          <div className="lista_pokemon">
             {pokemonsPaginados.map((pokemon: IPokemon) => (
-              <div key={pokemon.id}>
-                <img
-                  src={pokemon.sprites.other["official-artwork"].front_default}
-                  alt={pokemon.name}
-                  style={{ width: "100px", height: "100px" }}
-                />
-                <h2>{TransformarPrimeiraLetraMaiscula(pokemon.name)}</h2>
-                <h3>{`Nº ${pokemon.id}`}</h3>
-                <Link to={`/pokemon/${pokemon.id}`}>Ver detalhes</Link>
-              </div>
+              <Link to={`/pokemon/${pokemon.id}`} key={pokemon.id}>
+                <div>
+                  <Card
+                    img={pokemon.sprites.front_default}
+                    back_img={
+                      pokemon.sprites.other["official-artwork"].front_default
+                    }
+                    nome={pokemon.name}
+                    tipos={pokemon.types
+                      .map((type) => type.type.name)
+                      .join(" | ")}
+                    altura={pokemon.height}
+                    peso={pokemon.weight}
+                  />
+                </div>
+              </Link>
             ))}
           </div>
         </>
@@ -74,6 +83,6 @@ export default function ListaPokemon() {
         </button>
         <button onClick={carregarMais}>Avançar</button>
       </div>
-    </div>
+    </main>
   );
 }
