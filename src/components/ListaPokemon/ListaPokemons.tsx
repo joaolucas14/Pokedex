@@ -6,6 +6,7 @@ import { IPokemon } from "../../interfaces/IPokemon";
 import Card from "../Card/Card";
 
 import "./ListaPokemon.css";
+import { Link } from "react-router-dom";
 
 export default function ListaPokemon() {
   const [loading] = useRecoilState(loadingState);
@@ -33,7 +34,7 @@ export default function ListaPokemon() {
     if (pokemonsCompletos.length === 0) {
       pegarPokemons();
     }
-  }, [paginaAtual, pegarPokemons, pokemonsCompletos.length]);
+  }, [pegarPokemons, pokemonsCompletos.length]);
 
   const carregarMais = () => setPaginaAtual((prev) => prev + 1);
   const voltar = () => setPaginaAtual((prev) => (prev > 1 ? prev - 1 : 1));
@@ -55,18 +56,22 @@ export default function ListaPokemon() {
           </div>
           <div className="lista_pokemon">
             {pokemonsPaginados.map((pokemon: IPokemon) => (
-              <div key={pokemon.id}>
-                <Card
-                  img={pokemon.sprites.front_default}
-                  back_img={
-                    pokemon.sprites.other["official-artwork"].front_default
-                  }
-                  nome={pokemon.name}
-                  tipos={pokemon.types
-                    .map((type) => type.type.name)
-                    .join(" | ")}
-                />
-              </div>
+              <Link to={`/pokemon/${pokemon.id}`} key={pokemon.id}>
+                <div>
+                  <Card
+                    img={pokemon.sprites.front_default}
+                    back_img={
+                      pokemon.sprites.other["official-artwork"].front_default
+                    }
+                    nome={pokemon.name}
+                    tipos={pokemon.types
+                      .map((type) => type.type.name)
+                      .join(" | ")}
+                    altura={pokemon.height}
+                    peso={pokemon.weight}
+                  />
+                </div>
+              </Link>
             ))}
           </div>
         </>
