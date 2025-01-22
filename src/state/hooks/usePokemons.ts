@@ -52,8 +52,8 @@ const usePokemons = () => {
 
   // Função para lidar com a paginação após aplicar o filtro
   const paginarPokemons = (pagina: number, pokemonsFiltrados: IPokemon[]) => {
-    const inicio = (pagina - 1) * 9;
-    const fim = inicio + 9;
+    const inicio = (pagina - 1) * 12;
+    const fim = inicio + 12;
     return pokemonsFiltrados.slice(inicio, fim); // Retorna apenas os 9 Pokémons da página atual
   };
 

@@ -1,14 +1,13 @@
-import { formatarTexto } from "../../utils/FormatarTexto";
 import TransformarPrimeiraLetraMaiscula from "../../utils/TransformarPrimeiraLetraMaiscula";
 import "./Card.css";
 interface ICardProps {
   img: string;
+  back_img: string;
   nome: string;
-  descricao: string;
   tipos: string;
 }
 
-export default function Card({ img, nome, descricao, tipos }: ICardProps) {
+export default function Card({ img, nome, tipos, back_img }: ICardProps) {
   return (
     <div className="card">
       <div className="content">
@@ -20,7 +19,13 @@ export default function Card({ img, nome, descricao, tipos }: ICardProps) {
         </div>
         <div className="front">
           <div className="img">
-            <div className="circle" id="bottom"></div>
+            <div
+              className="pokemon"
+              id="bottom"
+              style={{
+                backgroundImage: `url(${back_img})`,
+              }}
+            ></div>
           </div>
           <div className="front-content">
             <small className="badge">
@@ -29,7 +34,11 @@ export default function Card({ img, nome, descricao, tipos }: ICardProps) {
             <div className="description">
               <div className="title">
                 <p className="title">
-                  <strong>{formatarTexto(descricao)}</strong>
+                  <strong>
+                    Tipos:
+                    <br />
+                    {tipos}
+                  </strong>
                 </p>
                 <svg
                   fillRule="nonzero"
@@ -60,7 +69,6 @@ export default function Card({ img, nome, descricao, tipos }: ICardProps) {
                   </g>
                 </svg>
               </div>
-              <p className="card-footer">{tipos}</p>
             </div>
           </div>
         </div>
