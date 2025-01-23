@@ -4,9 +4,12 @@ import { loadingState } from "../../state/atom";
 import usePokemons from "../../state/hooks/usePokemons";
 import { IPokemon } from "../../interfaces/IPokemon";
 import Card from "../Card/Card";
+import setaDireita from "../../assets/imagens/seta_direita.png";
+import setaEsquerda from "../../assets/imagens/seta_esquerda.png";
 
 import "./ListaPokemon.css";
 import { Link } from "react-router-dom";
+import Input from "../Input/Input";
 
 export default function ListaPokemon() {
   const [loading] = useRecoilState(loadingState);
@@ -38,7 +41,6 @@ export default function ListaPokemon() {
 
   const carregarMais = () => setPaginaAtual((prev) => prev + 1);
   const voltar = () => setPaginaAtual((prev) => (prev > 1 ? prev - 1 : 1));
-
   return (
     <main>
       {loading ? (
@@ -47,42 +49,45 @@ export default function ListaPokemon() {
         <>
           <div className="titulo_input">
             <h1 className="titulo">Lista de Pokémon</h1>
-            <input
-              type="text"
-              value={filtroTexto}
-              onChange={aoDigitarFiltro}
-              placeholder="Filtrar por nome"
+            <Input
+              aoDigitarFiltro={aoDigitarFiltro}
+              filtroTexto={filtroTexto}
             />
           </div>
-          <div className="lista_pokemon">
-            {pokemonsPaginados.map((pokemon: IPokemon) => (
-              <Link to={`/pokemon/${pokemon.id}`} key={pokemon.id}>
-                <div>
-                  <Card
-                    img={pokemon.sprites.front_default}
-                    back_img={
-                      pokemon.sprites.other["official-artwork"].front_default
-                    }
-                    nome={pokemon.name}
-                    tipos={pokemon.types
-                      .map((type) => type.type.name)
-                      .join(" | ")}
-                    altura={pokemon.height}
-                    peso={pokemon.weight}
-                  />
-                </div>
-              </Link>
-            ))}
+          <div className="container_lista_pokemon">
+            <button
+              onClick={voltar}
+              className="botao_voltar"
+              disabled={paginaAtual === 1}
+            >
+              <img src={setaEsquerda} alt="Seta para a esquerda" />
+            </button>
+            <div className="lista_pokemon">
+              {pokemonsPaginados.map((pokemon: IPokemon) => (
+                <Link to={`/pokemon/${pokemon.id}`} key={pokemon.id}>
+                  <div>
+                    <Card
+                      img={pokemon.sprites.front_default}
+                      back_img={
+                        pokemon.sprites.other["official-artwork"].front_default
+                      }
+                      nome={pokemon.name}
+                      tipos={pokemon.types
+                        .map((type) => type.type.name)
+                        .join(" | ")}
+                      altura={pokemon.height}
+                      peso={pokemon.weight}
+                    />
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <button onClick={carregarMais} className="botao_avancar">
+              <img src={setaDireita} alt="Seta para a direita" />
+            </button>
           </div>
         </>
       )}
-
-      <div>
-        <button onClick={voltar} disabled={paginaAtual === 1}>
-          Voltar
-        </button>
-        <button onClick={carregarMais}>Avançar</button>
-      </div>
     </main>
   );
 }

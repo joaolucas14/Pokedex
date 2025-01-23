@@ -10,17 +10,49 @@ h1 {
   align-items: center;
 }
 
-.titulo_input input {
-  width: 30%;
-  height: 30px;
-  border-radius: 15px;
-}
-
 .lista_pokemon {
-  padding: 50px;
+  padding: 10px 50px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 40px;
   margin: 0px 10px 0px 10px;
+}
+
+.container_lista_pokemon {
+  position: relative;
+  margin: 20px;
+}
+
+.botao_voltar,
+.botao_avancar {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10px 20px;
+}
+
+.botao_voltar:disabled {
+  opacity: 0.2;
+}
+
+.botao_voltar {
+  left: -15px; /* Ajuste para a esquerda */
+}
+
+.botao_avancar {
+  right: -15px; /* Ajuste para a direita */
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+button:hover {
+  scale: 1.1;
+}
+
+button img {
+  width: 50px;
 }
