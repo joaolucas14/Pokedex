@@ -6,6 +6,7 @@ import "./PaginaPokemon.css";
 import usePokemonDetalhes from "../../state/hooks/usePokemonDetalhes";
 import TransformarPrimeiraLetraMaiscula from "../../utils/TransformarPrimeiraLetraMaiscula";
 import { formatarTexto } from "../../utils/FormatarTexto";
+import Botao from "../../components/Botao/Botao";
 
 export default function PaginaPokemon() {
   const id = useParams<{ id: string }>().id;
@@ -59,6 +60,7 @@ export default function PaginaPokemon() {
       <button onClick={() => navigate(`/pokemon/${pokemon.id + 1}`)}>
         Próximo
       </button>
+      <Botao paginaAtual={1} voltar={() => navigate("/")} />
     </div>
   );
 }

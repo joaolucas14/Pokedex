@@ -1,3 +1,20 @@
 footer {
   background-color: red;
+  padding: 2px;
+  text-align: center;
+}
+footer p {
+  color: white;
+  font-size: 18px;
+}
+
+footer a {
+  margin-left: 5px;
+  color: white;
+  text-decoration: none;
+  font-weight: bolder;
+  letter-spacing: 1.1px;
+}
+a:hover {
+  scale: 1.1;
 }
