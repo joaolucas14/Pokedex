@@ -2,7 +2,40 @@ header {
   display: flex;
   background-color: red;
   width: 100%;
+  justify-content: space-between;
 }
 header img {
   width: 100px;
+}
+header div {
+  display: flex;
+  align-items: center;
+  margin-left: 10px;
+}
+
+.logo h1 {
+  color: white;
+  font-size: 40px;
+  margin-left: 10px;
+  letter-spacing: 1.3px;
+}
+
+.link {
+  text-decoration: none;
+}
+.link h2 {
+  color: white;
+  font-size: 20px;
+  margin-right: 10px;
+  letter-spacing: 1.3px;
+}
+.menu {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  gap: 40px;
+}
+.menu img {
+  width: 30px;
+  margin-right: 5px;
 }
