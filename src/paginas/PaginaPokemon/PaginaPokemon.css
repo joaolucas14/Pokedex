@@ -15,6 +15,11 @@
 #botao_voltar {
   left: -5px;
 }
+.numero_id {
+  margin-left: 10px;
+  font-size: 22px;
+  color: gray;
+}
 
 .imagem_pokemon {
   display: flex;

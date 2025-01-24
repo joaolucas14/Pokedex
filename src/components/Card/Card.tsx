@@ -8,17 +8,21 @@ interface ICardProps {
   tipos: string;
   altura: number;
   peso: number;
+  id: number;
 }
 
 const Card = React.memo(
-  ({ img, nome, tipos, back_img, altura, peso }: ICardProps) => {
+  ({ img, nome, tipos, back_img, altura, peso, id }: ICardProps) => {
     return (
       <div className="card">
         <div className="content">
           <div className="back">
             <div className="back-content">
               <img src={img} alt={nome} />
-              <strong>{TransformarPrimeiraLetraMaiscula(nome)}</strong>
+              <strong>
+                {TransformarPrimeiraLetraMaiscula(nome)}
+                <span className="numero">{`Nº${id}`}</span>
+              </strong>
             </div>
           </div>
           <div className="front">

@@ -42,7 +42,10 @@ export default function PaginaPokemon() {
   console.log(pokemon);
   return (
     <>
-      <h1>{TransformarPrimeiraLetraMaiscula(nomePokemon)}</h1>
+      <h1>
+        {TransformarPrimeiraLetraMaiscula(nomePokemon)}
+        <span className="numero_id">{`Nª${pokemon.id}`}</span>
+      </h1>
       <div className="container">
         <div className="imagem_pokemon">
           <img
@@ -83,14 +86,15 @@ export default function PaginaPokemon() {
         className="botao_voltar"
         id="botao_voltar"
       >
-        <img src={setaEsquerda} alt="" />
+        <img src={setaEsquerda} alt="Seta esquerda" />
       </button>
       <button
         onClick={() => navigate(`/pokemon/${pokemon.id + 1}`)}
         className="botao_avancar"
         id="botao_avancar"
+        disabled={id === "1025"}
       >
-        <img src={setaDireita} alt="" />
+        <img src={setaDireita} alt="Seta direita" />
       </button>
     </>
   );

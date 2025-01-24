@@ -73,6 +73,7 @@ export default function ListaPokemon() {
                         pokemon.sprites.other["official-artwork"].front_default
                       }
                       nome={pokemon.name}
+                      id={pokemon.id}
                       tipos={pokemon.types
                         .map((type) => type.type.name)
                         .join(" | ")}
