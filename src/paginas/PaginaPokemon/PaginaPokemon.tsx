@@ -6,7 +6,9 @@ import "./PaginaPokemon.css";
 import usePokemonDetalhes from "../../state/hooks/usePokemonDetalhes";
 import TransformarPrimeiraLetraMaiscula from "../../utils/TransformarPrimeiraLetraMaiscula";
 import { formatarTexto } from "../../utils/FormatarTexto";
-import Botao from "../../components/Botao/Botao";
+import setaDireita from "../../assets/imagens/seta_direita.png";
+import setaEsquerda from "../../assets/imagens/seta_esquerda.png";
+import "./PaginaPokemon.css";
 
 export default function PaginaPokemon() {
   const id = useParams<{ id: string }>().id;
@@ -37,30 +39,59 @@ export default function PaginaPokemon() {
   if (!pokemon) {
     return <div>Carregando...</div>;
   }
+  console.log(pokemon);
   return (
-    <div>
+    <>
       <h1>{TransformarPrimeiraLetraMaiscula(nomePokemon)}</h1>
-      <img src={pokemon.sprites.front_default} alt="" />
-      <div>
-        <h2>Descrição</h2>
-        <p>{formatarTexto(descricao)}! </p>
+      <div className="container">
+        <div className="imagem_pokemon">
+          <img
+            src={pokemon.sprites.other["official-artwork"].front_default}
+            alt=""
+          />
+        </div>
+        <div className="informacoes_pokemon">
+          <h2>Descrição</h2>
+          <div className="descricao">
+            <p>{formatarTexto(descricao)}! </p>
+          </div>
+          <div className="habilidades">
+            Habilidades:
+            {pokemon.abilities.map(
+              (ability) =>
+                ` ${TransformarPrimeiraLetraMaiscula(ability.ability.name)} | `
+            )}
+          </div>
+          <div className="peso_altura">
+            Peso: {pokemon.weight / 10} Kg Altura: {pokemon.height / 10} M
+          </div>
+          <div className="tipos">
+            <p>Tipos:</p>
+            <ul>
+              {pokemon.types.map((type) => (
+                <li key={type.type.name}>
+                  {TransformarPrimeiraLetraMaiscula(type.type.name)}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
-      <ul>
-        {pokemon.types.map((type) => (
-          <li key={type.type.name}>{type.type.name}</li>
-        ))}
-      </ul>
-      <button onClick={() => navigate("/")}>Sair</button>
       <button
         disabled={id === "1"}
         onClick={() => navigate(`/pokemon/${pokemon.id - 1}`)}
+        className="botao_voltar"
+        id="botao_voltar"
       >
-        Anterior
+        <img src={setaEsquerda} alt="" />
       </button>
-      <button onClick={() => navigate(`/pokemon/${pokemon.id + 1}`)}>
-        Próximo
+      <button
+        onClick={() => navigate(`/pokemon/${pokemon.id + 1}`)}
+        className="botao_avancar"
+        id="botao_avancar"
+      >
+        <img src={setaDireita} alt="" />
       </button>
-      <Botao paginaAtual={1} voltar={() => navigate("/")} />
-    </div>
+    </>
   );
 }

@@ -1,8 +1,12 @@
 footer {
   background-color: red;
-  padding: 2px;
+  padding: 10px;
   text-align: center;
+  position: sticky;
+  bottom: 0; /* Fixa o footer quando a página termina */
+  width: 98.7%;
 }
+
 footer p {
   color: white;
   font-size: 18px;
