@@ -10,6 +10,7 @@ import setaEsquerda from "../../assets/imagens/seta_esquerda.png";
 import "./ListaPokemon.css";
 import { Link } from "react-router-dom";
 import Input from "../Input/Input";
+import Loading from "../Loading/Loading";
 
 export default function ListaPokemon() {
   const [loading] = useRecoilState(loadingState);
@@ -44,7 +45,7 @@ export default function ListaPokemon() {
   return (
     <main>
       {loading ? (
-        <div>Carregando...</div>
+        <Loading />
       ) : (
         <>
           <div className="titulo_input">
