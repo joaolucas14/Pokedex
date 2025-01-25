@@ -10,13 +10,19 @@ h1 {
   align-items: center;
 }
 
+.filtro_tipo {
+  display: flex;
+  justify-content: end;
+  margin-right: 90px;
+}
+
 .lista_pokemon {
   padding: 10px 50px;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 40px;
-  margin: 0px 10px 0px 10px;
+  margin: 0px 10px 2px 10px;
 }
 
 .container_lista_pokemon {
@@ -55,4 +61,12 @@ button:hover {
 
 button img {
   width: 50px;
+}
+
+@media (max-width: 645px) {
+  .filtro_tipo {
+    justify-content: center;
+    margin-right: 0px;
+    margin-top: 20px;
+  }
 }

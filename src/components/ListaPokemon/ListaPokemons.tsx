@@ -6,17 +6,25 @@ import { IPokemon } from "../../interfaces/IPokemon";
 import Card from "../Card/Card";
 import setaDireita from "../../assets/imagens/seta_direita.png";
 import setaEsquerda from "../../assets/imagens/seta_esquerda.png";
-
 import "./ListaPokemon.css";
 import { Link } from "react-router-dom";
 import Input from "../Input/Input";
+import Loading from "../Loading/Loading";
+import FiltroPorTipo from "../FiltroPorTipo/FiltroPorTipo";
 
 export default function ListaPokemon() {
   const [loading] = useRecoilState(loadingState);
-  const { pegarPokemons, aplicarFiltro, pokemonsCompletos, paginarPokemons } =
-    usePokemons();
+  const {
+    pegarPokemons,
+    aplicarFiltro,
+    pokemonsCompletos,
+    paginarPokemons,
+    pokemonsFiltrados,
+    aplicarFiltroPorTipo,
+  } = usePokemons();
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [filtroTexto, setFiltroTexto] = useState("");
+  const [filtroTipo, setFiltroTipo] = useState("");
 
   const aoDigitarFiltro = (evento: React.ChangeEvent<HTMLInputElement>) => {
     const filtroDigitado = evento.target.value;
@@ -25,13 +33,18 @@ export default function ListaPokemon() {
     setPaginaAtual(1);
   };
 
-  const pokemonsFiltrados = pokemonsCompletos.filter(
-    (pokemon) =>
-      pokemon.name.toLowerCase().includes(filtroTexto.toLowerCase()) ||
-      pokemon.id.toString().includes(filtroTexto)
-  );
+  const aoDigitarFiltroPorTipo = (
+    evento: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const filtroTipoDigitado = evento.target.value;
+    setFiltroTipo(filtroTipoDigitado);
+    aplicarFiltroPorTipo(filtroTipoDigitado);
+    setPaginaAtual(1);
+  };
 
-  const pokemonsPaginados = paginarPokemons(paginaAtual, pokemonsFiltrados);
+  const pokemonsFitltrados = pokemonsFiltrados(pokemonsCompletos);
+
+  const pokemonsPaginados = paginarPokemons(paginaAtual, pokemonsFitltrados);
 
   useEffect(() => {
     if (pokemonsCompletos.length === 0) {
@@ -41,10 +54,11 @@ export default function ListaPokemon() {
 
   const carregarMais = () => setPaginaAtual((prev) => prev + 1);
   const voltar = () => setPaginaAtual((prev) => (prev > 1 ? prev - 1 : 1));
+
   return (
     <main>
       {loading ? (
-        <div>Carregando...</div>
+        <Loading />
       ) : (
         <>
           <div className="titulo_input">
@@ -52,6 +66,12 @@ export default function ListaPokemon() {
             <Input
               aoDigitarFiltro={aoDigitarFiltro}
               filtroTexto={filtroTexto}
+            />
+          </div>
+          <div className="filtro_tipo">
+            <FiltroPorTipo
+              aoDigitarFiltroPorTipo={aoDigitarFiltroPorTipo}
+              filtroTipo={filtroTipo}
             />
           </div>
           <div className="container_lista_pokemon">
@@ -72,6 +92,7 @@ export default function ListaPokemon() {
                         pokemon.sprites.other["official-artwork"].front_default
                       }
                       nome={pokemon.name}
+                      id={pokemon.id}
                       tipos={pokemon.types
                         .map((type) => type.type.name)
                         .join(" | ")}

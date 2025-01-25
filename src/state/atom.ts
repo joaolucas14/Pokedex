@@ -1,6 +1,7 @@
 import { atom } from "recoil";
 import { IPokemon } from "../interfaces/IPokemon";
 import { IPokemonDetalhes } from "../interfaces/IPokemonDetalhes";
+import { ITipoPokemon } from "../interfaces/ITipoPokemon";
 
 export const listaPokemonState = atom<IPokemon[]>({
   key: "listaPokemonState",
@@ -20,4 +21,9 @@ export const unicoPokemonState = atom<IPokemon | null>({
 export const detalhesPokemonState = atom<IPokemonDetalhes | null>({
   key: "detalhesPokemon",
   default: null,
+});
+
+export const tiposPokemonState = atom<ITipoPokemon[]>({
+  key: "tiposPokemon",
+  default: [],
 });
