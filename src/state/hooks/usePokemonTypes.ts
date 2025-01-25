@@ -10,7 +10,6 @@ export default function usePokemonTypes() {
     try {
       const resposta = await http.get("type");
       setPokemonTypes(resposta.data.results);
-      console.log("Tipos de pokémon:", resposta.data.results);
     } catch (erro) {
       console.log("Erro ao buscar tipos de pokémon:", erro);
     }

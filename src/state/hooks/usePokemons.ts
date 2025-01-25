@@ -3,14 +3,20 @@ import { IPokemon } from "../../interfaces/IPokemon";
 import { http } from "../../api/http";
 import { listaPokemonState, loadingState } from "../atom";
 import { useCallback, useState } from "react";
+
 const usePokemons = () => {
   const [pokemonsCompletos, setListaPokemon] =
     useRecoilState(listaPokemonState); // Agora usa Recoil
   const setLoading = useSetRecoilState(loadingState);
-  const [filtro, setFiltro] = useState<string>("");
+  const [filtro, setFiltro] = useState<string>(""); // Filtro por nome
+  const [tipo, setTipo] = useState<string>(""); // Filtro por tipo
 
   const aplicarFiltro = (filtro: string) => {
     setFiltro(filtro.toLowerCase());
+  };
+
+  const aplicarFiltroPorTipo = (tipo: string) => {
+    setTipo(tipo);
   };
 
   const pegarPokemons = useCallback(async () => {
@@ -18,9 +24,9 @@ const usePokemons = () => {
     setLoading(true);
     try {
       const lotes = [
-        { offset: 0, limit: 342 }, // Primeiro lote (~1/3 dos Pokémons)
-        { offset: 342, limit: 341 }, // Segundo lote (~1/3 dos Pokémons)
-        { offset: 683, limit: 342 }, // Terceiro lote (~1/3 dos Pokémons)
+        { offset: 0, limit: 342 },
+        { offset: 342, limit: 341 },
+        { offset: 683, limit: 342 },
       ];
 
       const detalhes: IPokemon[] = [];
@@ -56,9 +62,11 @@ const usePokemons = () => {
   }, [pokemonsCompletos, setListaPokemon, setLoading]);
 
   const pokemonsFiltrados = (pokemons: IPokemon[]) => {
-    return pokemons.filter((pokemon) =>
-      pokemon.name.toLowerCase().includes(filtro)
-    );
+    return pokemons
+      .filter((pokemon) => pokemon.name.toLowerCase().includes(filtro))
+      .filter((pokemon) =>
+        tipo ? pokemon.types.some((t) => t.type.name === tipo) : true
+      );
   };
 
   const paginarPokemons = (pagina: number, pokemonsFiltrados: IPokemon[]) => {
@@ -70,7 +78,9 @@ const usePokemons = () => {
   return {
     pegarPokemons,
     aplicarFiltro,
+    aplicarFiltroPorTipo,
     filtro,
+    tipo,
     pokemonsCompletos,
     pokemonsFiltrados,
     paginarPokemons,
