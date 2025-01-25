@@ -20,11 +20,11 @@ export default function ListaPokemon() {
     pokemonsCompletos,
     paginarPokemons,
     pokemonsFiltrados,
-    // aplicarFiltroPorTipo,
+    aplicarFiltroPorTipo,
   } = usePokemons();
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [filtroTexto, setFiltroTexto] = useState("");
-  // const [filtroTipo, setFiltroTipo] = useState("");
+  const [filtroTipo, setFiltroTipo] = useState("");
 
   const aoDigitarFiltro = (evento: React.ChangeEvent<HTMLInputElement>) => {
     const filtroDigitado = evento.target.value;
@@ -33,14 +33,14 @@ export default function ListaPokemon() {
     setPaginaAtual(1);
   };
 
-  // const aoDigitarFiltroPorTipo = (
-  //   evento: React.ChangeEvent<HTMLSelectElement>
-  // ) => {
-  //   const filtroTipoDigitado = evento.target.value;
-  //   setFiltroTipo(filtroTipoDigitado);
-  //   aplicarFiltroPorTipo(filtroTipoDigitado);
-  //   setPaginaAtual(1);
-  // };
+  const aoDigitarFiltroPorTipo = (
+    evento: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const filtroTipoDigitado = evento.target.value;
+    setFiltroTipo(filtroTipoDigitado);
+    aplicarFiltroPorTipo(filtroTipoDigitado);
+    setPaginaAtual(1);
+  };
 
   const pokemonsFitltrados = pokemonsFiltrados(pokemonsCompletos);
 
@@ -70,8 +70,8 @@ export default function ListaPokemon() {
           </div>
           <div className="filtro_tipo">
             <FiltroPorTipo
-            // aoDigitarFiltroPorTipo={aoDigitarFiltroPorTipo}
-            // filtroTipo={filtroTipo}
+              aoDigitarFiltroPorTipo={aoDigitarFiltroPorTipo}
+              filtroTipo={filtroTipo}
             />
           </div>
           <div className="container_lista_pokemon">
