@@ -6,11 +6,11 @@ import { IPokemon } from "../../interfaces/IPokemon";
 import Card from "../Card/Card";
 import setaDireita from "../../assets/imagens/seta_direita.png";
 import setaEsquerda from "../../assets/imagens/seta_esquerda.png";
-
 import "./ListaPokemon.css";
 import { Link } from "react-router-dom";
 import Input from "../Input/Input";
 import Loading from "../Loading/Loading";
+import FiltroPorTipo from "../FiltroPorTipo/FiltroPorTipo";
 
 export default function ListaPokemon() {
   const [loading] = useRecoilState(loadingState);
@@ -42,6 +42,7 @@ export default function ListaPokemon() {
 
   const carregarMais = () => setPaginaAtual((prev) => prev + 1);
   const voltar = () => setPaginaAtual((prev) => (prev > 1 ? prev - 1 : 1));
+
   return (
     <main>
       {loading ? (
@@ -54,6 +55,9 @@ export default function ListaPokemon() {
               aoDigitarFiltro={aoDigitarFiltro}
               filtroTexto={filtroTexto}
             />
+          </div>
+          <div className="filtro_tipo">
+            <FiltroPorTipo />
           </div>
           <div className="container_lista_pokemon">
             <button

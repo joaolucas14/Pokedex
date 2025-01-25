@@ -16,6 +16,7 @@ export default function PaginaPokemon() {
   const { pokemonDetalhes, buscarDetalhesPokemonPorNome } =
     usePokemonDetalhes();
   const navigate = useNavigate();
+  let corDaletra = "white";
 
   useEffect(() => {
     if (id) {
@@ -36,10 +37,15 @@ export default function PaginaPokemon() {
 
   const nomePokemon = pokemon?.name || "";
 
+  if (
+    pokemonDetalhes?.color.name === "white" ||
+    pokemonDetalhes?.color.name === "yellow"
+  ) {
+    corDaletra = "black";
+  }
   if (!pokemon) {
     return <div>Carregando...</div>;
   }
-  console.log(pokemon);
   return (
     <>
       <h1>
@@ -53,7 +59,13 @@ export default function PaginaPokemon() {
             alt=""
           />
         </div>
-        <div className="informacoes_pokemon">
+        <div
+          className="informacoes_pokemon"
+          style={{
+            backgroundColor: pokemonDetalhes?.color.name,
+            color: corDaletra,
+          }}
+        >
           <h2>Descrição</h2>
           <div className="descricao">
             <p>{formatarTexto(descricao)}! </p>

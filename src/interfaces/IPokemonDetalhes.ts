@@ -8,4 +8,7 @@ export interface IPokemonDetalhes {
       name: string;
     };
   }[];
+  color: {
+    name: string;
+  };
 }

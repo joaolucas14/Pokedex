@@ -8,7 +8,7 @@ export default function Loading() {
         <div className="words">
           <span className="word">Pokemons</span>
           <span className="word">Pokebolas</span>
-          <span className="word">Biomas</span>
+          <span className="word">Rotas</span>
           <span className="word">Berrys</span>
           <span className="word">Treinadores</span>
         </div>

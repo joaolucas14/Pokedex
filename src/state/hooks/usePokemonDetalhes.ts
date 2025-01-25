@@ -12,6 +12,7 @@ export default function usePokemonDetalhes() {
       try {
         const resposta = await http.get(`pokemon-species/${id}`);
         setPokemonDetalhes(resposta.data);
+        console.log("Detalhes do pokemon:", resposta.data);
       } catch (erro) {
         console.log("Erro ao buscar detalhes do pokemon:", erro);
       }
