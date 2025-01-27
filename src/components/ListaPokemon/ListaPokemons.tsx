@@ -7,7 +7,7 @@ import Card from "../Card/Card";
 import setaDireita from "../../assets/imagens/seta_direita.png";
 import setaEsquerda from "../../assets/imagens/seta_esquerda.png";
 import "./ListaPokemon.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Input from "../Input/Input";
 import Loading from "../Loading/Loading";
 import FiltroPorTipo from "../FiltroPorTipo/FiltroPorTipo";
@@ -25,6 +25,7 @@ export default function ListaPokemon() {
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [filtroTexto, setFiltroTexto] = useState("");
   const [filtroTipo, setFiltroTipo] = useState("");
+  const navigate = useNavigate();
 
   const aoDigitarFiltro = (evento: React.ChangeEvent<HTMLInputElement>) => {
     const filtroDigitado = evento.target.value;
@@ -84,23 +85,22 @@ export default function ListaPokemon() {
             </button>
             <div className="lista_pokemon">
               {pokemonsPaginados.map((pokemon: IPokemon) => (
-                <Link to={`/pokemon/${pokemon.id}`} key={pokemon.id}>
-                  <div>
-                    <Card
-                      img={pokemon.sprites.front_default}
-                      back_img={
-                        pokemon.sprites.other["official-artwork"].front_default
-                      }
-                      nome={pokemon.name}
-                      id={pokemon.id}
-                      tipos={pokemon.types
-                        .map((type) => type.type.name)
-                        .join(" | ")}
-                      altura={pokemon.height}
-                      peso={pokemon.weight}
-                    />
-                  </div>
-                </Link>
+                <div key={pokemon.id}>
+                  <Card
+                    onClick={() => navigate(`/pokemon/${pokemon.id}`)}
+                    img={pokemon.sprites.front_default}
+                    back_img={
+                      pokemon.sprites.other["official-artwork"].front_default
+                    }
+                    nome={pokemon.name}
+                    id={pokemon.id}
+                    tipos={pokemon.types
+                      .map((type) => type.type.name)
+                      .join(" | ")}
+                    altura={pokemon.height}
+                    peso={pokemon.weight}
+                  />
+                </div>
               ))}
             </div>
             <button onClick={carregarMais} className="botao_avancar">

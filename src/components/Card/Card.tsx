@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import TransformarPrimeiraLetraMaiscula from "../../utils/TransformarPrimeiraLetraMaiscula";
 import "./Card.css";
 interface ICardProps {
@@ -9,12 +9,18 @@ interface ICardProps {
   altura: number;
   peso: number;
   id: number;
+  onClick: () => void;
 }
 
 const Card = React.memo(
-  ({ img, nome, tipos, back_img, altura, peso, id }: ICardProps) => {
+  ({ img, nome, tipos, back_img, altura, peso, id, onClick }: ICardProps) => {
+    const [favorito, setFavorito] = useState(false);
+    const toggleFavorito = (event: React.MouseEvent<HTMLButtonElement>) => {
+      event.stopPropagation(); // Impede a propagação do evento para o link
+      setFavorito(!favorito);
+    };
     return (
-      <div className="card">
+      <div className="card" onClick={onClick}>
         <div className="content">
           <div className="back">
             <div className="back-content">
@@ -53,6 +59,13 @@ const Card = React.memo(
                 </div>
               </div>
             </div>
+            <button
+              className={`favorito-button ${favorito ? "favorito" : ""}`}
+              onClick={toggleFavorito}
+              aria-label={favorito ? "Desfavoritar" : "Favoritar"}
+            >
+              {favorito ? "★" : "☆"}
+            </button>
           </div>
         </div>
       </div>
