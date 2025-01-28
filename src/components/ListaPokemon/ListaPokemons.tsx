@@ -25,9 +25,6 @@ export default function ListaPokemon() {
   const [paginaAtual, setPaginaAtual] = useState(1);
   const [filtroTexto, setFiltroTexto] = useState("");
   const [filtroTipo, setFiltroTipo] = useState("");
-  // const [listaFavoritos, setListaFavoritos] = useState<number[]>([
-  //   1, 7, 15, 20,
-  // ]);
 
   const navigate = useNavigate();
 

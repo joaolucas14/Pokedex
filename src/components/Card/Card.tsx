@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import TransformarPrimeiraLetraMaiscula from "../../utils/TransformarPrimeiraLetraMaiscula";
 import "./Card.css";
+import usePokemons from "../../state/hooks/usePokemons";
 interface ICardProps {
   img: string;
   back_img: string;
@@ -25,13 +26,9 @@ const Card = React.memo(
     pokemonFav,
     onClick,
   }: ICardProps) => {
-    const [favorito, setFavorito] = useState(false);
-    const toggleFavorito = (event: React.MouseEvent<HTMLButtonElement>) => {
-      event.stopPropagation(); // Impede a propagação do evento para o link
-      setFavorito(!favorito);
-    };
+    const { toggleFavorito } = usePokemons();
     return (
-      <div className="card" onClick={onClick}>
+      <div className="card">
         <div className="content">
           <div className="back">
             <div className="back-content">
@@ -56,7 +53,7 @@ const Card = React.memo(
               <small className="badge">
                 {TransformarPrimeiraLetraMaiscula(nome)}
               </small>
-              <div className="description">
+              <div className="description" onClick={onClick}>
                 <div className="title">
                   <p className="title">
                     <strong>
@@ -73,11 +70,10 @@ const Card = React.memo(
               </div>
             </div>
             <button
-              className={`favorito-button ${favorito ? "favorito" : ""}`}
-              onClick={toggleFavorito}
-              aria-label={favorito ? "Desfavoritar" : "Favoritar"}
+              onClick={() => toggleFavorito(id)}
+              className="favorito-button"
             >
-              {favorito ? "★" : "☆"}
+              {pokemonFav ? "★" : "☆"}
             </button>
           </div>
         </div>

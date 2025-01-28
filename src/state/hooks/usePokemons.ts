@@ -10,6 +10,7 @@ const usePokemons = () => {
   const setLoading = useSetRecoilState(loadingState);
   const [filtro, setFiltro] = useState<string>(""); // Filtro por nome
   const [tipo, setTipo] = useState<string>(""); // Filtro por tipo
+  const [favoritos, setFavoritos] = useState<number[]>([]); // Lista de IDs favoritos
 
   const aplicarFiltro = (filtro: string) => {
     setFiltro(filtro.toLowerCase());
@@ -17,6 +18,23 @@ const usePokemons = () => {
 
   const aplicarFiltroPorTipo = (tipo: string) => {
     setTipo(tipo);
+  };
+
+  const toggleFavorito = (id: number) => {
+    setFavoritos((prevFavoritos) =>
+      prevFavoritos.includes(id)
+        ? prevFavoritos.filter((favId) => favId !== id) // Remove da lista
+        : [...prevFavoritos, id]
+    );
+
+    // Atualiza o campo favorito na lista global de Pokémon
+    setListaPokemon((pokemons) =>
+      pokemons.map((pokemon) =>
+        pokemon.id === id
+          ? { ...pokemon, favorito: !pokemon.favorito }
+          : pokemon
+      )
+    );
   };
 
   const pegarPokemons = useCallback(async () => {
@@ -45,7 +63,7 @@ const usePokemons = () => {
               const pokemonDetalhado = res.data;
               return {
                 ...pokemonDetalhado,
-                favorito: false, // Adiciona o campo favorito com valor padrão
+                favorito: favoritos.includes(pokemonDetalhado.id), // Define favorito baseado na lista
               };
             })
           )
@@ -65,7 +83,7 @@ const usePokemons = () => {
     } finally {
       setLoading(false);
     }
-  }, [pokemonsCompletos, setListaPokemon, setLoading]);
+  }, [pokemonsCompletos, setListaPokemon, setLoading, favoritos]);
 
   const pokemonsFiltrados = (pokemons: IPokemon[]) => {
     return pokemons
@@ -90,6 +108,8 @@ const usePokemons = () => {
     pokemonsCompletos,
     pokemonsFiltrados,
     paginarPokemons,
+    toggleFavorito,
+    favoritos, // Exponha a lista de favoritos caso precise em outros componentes
   };
 };
 
