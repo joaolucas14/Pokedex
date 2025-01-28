@@ -5,6 +5,7 @@ import PaginaPokemon from "./paginas/PaginaPokemon/PaginaPokemon";
 import { RecoilRoot } from "recoil";
 import PaginaPadrao from "./paginas/PaginaPadrao/PaginaPadrao";
 import "normalize.css";
+import PaginaFavoritos from "./paginas/PaginaFavoritos/PaginaFavoritos";
 
 const App: React.FC = () => {
   return (
@@ -13,6 +14,7 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<PaginaPadrao />}>
             <Route index element={<PaginaInicial />} />
+            <Route path="favoritos" element={<PaginaFavoritos />} />
             <Route path="/pokemon/:id" element={<PaginaPokemon />} />
           </Route>
         </Routes>

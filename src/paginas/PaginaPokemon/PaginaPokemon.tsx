@@ -50,7 +50,7 @@ export default function PaginaPokemon() {
     <>
       <h1>
         {TransformarPrimeiraLetraMaiscula(nomePokemon)}
-        <span className="numero_id">{`Nª${pokemon.id}`}</span>
+        <span className="numero_id">{`Nª${pokemon.id} `}</span>
       </h1>
       <div className="container">
         <div className="imagem_pokemon">

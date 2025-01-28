@@ -1,6 +1,7 @@
 import React from "react";
 import TransformarPrimeiraLetraMaiscula from "../../utils/TransformarPrimeiraLetraMaiscula";
 import "./Card.css";
+import usePokemons from "../../state/hooks/usePokemons";
 interface ICardProps {
   img: string;
   back_img: string;
@@ -9,10 +10,23 @@ interface ICardProps {
   altura: number;
   peso: number;
   id: number;
+  onClick: () => void;
+  pokemonFav: boolean;
 }
 
 const Card = React.memo(
-  ({ img, nome, tipos, back_img, altura, peso, id }: ICardProps) => {
+  ({
+    img,
+    nome,
+    tipos,
+    back_img,
+    altura,
+    peso,
+    id,
+    pokemonFav,
+    onClick,
+  }: ICardProps) => {
+    const { toggleFavorito } = usePokemons();
     return (
       <div className="card">
         <div className="content">
@@ -39,7 +53,7 @@ const Card = React.memo(
               <small className="badge">
                 {TransformarPrimeiraLetraMaiscula(nome)}
               </small>
-              <div className="description">
+              <div className="description" onClick={onClick}>
                 <div className="title">
                   <p className="title">
                     <strong>
@@ -48,11 +62,19 @@ const Card = React.memo(
                       Tipos:
                       <br />
                       {tipos}
+                      <br />
+                      {`Favorito?${pokemonFav}`}
                     </strong>
                   </p>
                 </div>
               </div>
             </div>
+            <button
+              onClick={() => toggleFavorito(id)}
+              className="favorito-button"
+            >
+              {pokemonFav ? "★" : "☆"}
+            </button>
           </div>
         </div>
       </div>
