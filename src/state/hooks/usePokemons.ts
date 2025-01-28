@@ -41,7 +41,13 @@ const usePokemons = () => {
 
         const detalhesLote = await Promise.all(
           resposta.data.results.map((pokemon: IPokemon) =>
-            http.get(pokemon.url).then((res) => res.data)
+            http.get(pokemon.url).then((res) => {
+              const pokemonDetalhado = res.data;
+              return {
+                ...pokemonDetalhado,
+                favorito: false, // Adiciona o campo favorito com valor padrão
+              };
+            })
           )
         );
 

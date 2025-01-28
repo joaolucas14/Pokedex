@@ -10,10 +10,21 @@ interface ICardProps {
   peso: number;
   id: number;
   onClick: () => void;
+  pokemonFav: boolean;
 }
 
 const Card = React.memo(
-  ({ img, nome, tipos, back_img, altura, peso, id, onClick }: ICardProps) => {
+  ({
+    img,
+    nome,
+    tipos,
+    back_img,
+    altura,
+    peso,
+    id,
+    pokemonFav,
+    onClick,
+  }: ICardProps) => {
     const [favorito, setFavorito] = useState(false);
     const toggleFavorito = (event: React.MouseEvent<HTMLButtonElement>) => {
       event.stopPropagation(); // Impede a propagação do evento para o link
@@ -54,6 +65,8 @@ const Card = React.memo(
                       Tipos:
                       <br />
                       {tipos}
+                      <br />
+                      {`Favorito?${pokemonFav}`}
                     </strong>
                   </p>
                 </div>

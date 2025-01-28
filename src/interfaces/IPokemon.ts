@@ -11,4 +11,5 @@ export interface IPokemon {
   weight: number;
   height: number;
   abilities: IPokemonHabilidade[];
+  favorito: boolean;
 }
