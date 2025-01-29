@@ -9,12 +9,17 @@ import { formatarTexto } from "../../utils/FormatarTexto";
 import setaDireita from "../../assets/imagens/seta_direita.png";
 import setaEsquerda from "../../assets/imagens/seta_esquerda.png";
 import "./PaginaPokemon.css";
+import usePokemons from "../../state/hooks/usePokemons";
+import estrelaPreenchido from "../../assets/imagens/estrela (1).png";
+import estrela from "../../assets/imagens/estrela (2).png";
 
 export default function PaginaPokemon() {
   const id = useParams<{ id: string }>().id;
   const { pokemon, buscarPokemonPorId } = useUnicoPokemon();
   const { pokemonDetalhes, buscarDetalhesPokemonPorNome } =
     usePokemonDetalhes();
+  const { toggleFavorito } = usePokemons();
+
   const navigate = useNavigate();
   let corDaletra = "white";
 
@@ -46,11 +51,22 @@ export default function PaginaPokemon() {
   if (!pokemon) {
     return <div>Carregando...</div>;
   }
+  console.log("pokemon:", pokemon);
+  console.log("pokemon detalhes:", pokemonDetalhes);
   return (
     <>
       <h1>
         {TransformarPrimeiraLetraMaiscula(nomePokemon)}
-        <span className="numero_id">{`Nª${pokemon.id} `}</span>
+        <span className="numero_id">
+          {`Nª${pokemon.id}`}
+          <button onClick={() => toggleFavorito(pokemon.id)}>
+            <img
+              src={pokemon.favorito ? estrelaPreenchido : estrela}
+              alt="estrela favorito"
+              style={{ width: "30px" }}
+            />
+          </button>
+        </span>
       </h1>
       <div className="container">
         <div className="imagem_pokemon">
@@ -67,29 +83,68 @@ export default function PaginaPokemon() {
           }}
         >
           <h2>Descrição</h2>
-          <div className="descricao">
-            <p>{formatarTexto(descricao)}! </p>
+          <div className="descricao ">
+            <p>{formatarTexto(descricao)}</p>
           </div>
+          {pokemonDetalhes?.evolves_from_species?.name && (
+            <div className="evolui_de">
+              <span className="subtitulo">Evoulução de: </span>
+              {TransformarPrimeiraLetraMaiscula(
+                pokemonDetalhes.evolves_from_species.name
+              )}
+            </div>
+          )}
           <div className="habilidades">
-            Habilidades:
+            <span className="subtitulo">Habilidades:</span>
             {pokemon.abilities.map(
               (ability) =>
                 ` ${TransformarPrimeiraLetraMaiscula(ability.ability.name)} | `
             )}
           </div>
           <div className="peso_altura">
-            Peso: {pokemon.weight / 10} Kg Altura: {pokemon.height / 10} M
+            <span className="peso">
+              <span className="subtitulo">Peso:</span> {pokemon.weight / 10} Kg
+            </span>
+            <span className="altura">
+              <span className="subtitulo"> Altura:</span> {pokemon.height / 10}{" "}
+              M
+            </span>
           </div>
-          <div className="tipos">
-            <p>Tipos:</p>
-            <ul>
-              {pokemon.types.map((type) => (
-                <li key={type.type.name}>
-                  {TransformarPrimeiraLetraMaiscula(type.type.name)}
+        </div>
+      </div>
+      <div className="container_status_tipo">
+        <div
+          className="status"
+          style={{
+            backgroundColor: pokemonDetalhes?.color.name,
+            color: corDaletra,
+          }}
+        >
+          <ul>
+            {pokemon.stats.map(
+              (
+                stat: { stat: { name: string }; base_stat: number },
+                index: number
+              ) => (
+                <li key={index}>
+                  <strong>
+                    {TransformarPrimeiraLetraMaiscula(stat.stat.name)}:
+                  </strong>{" "}
+                  {stat.base_stat}
                 </li>
-              ))}
-            </ul>
-          </div>
+              )
+            )}
+          </ul>
+        </div>
+        <div className="tipos">
+          <span className="subtitulo">Tipos:</span>
+          <ul className="lista_tipos">
+            {pokemon.types.map((type) => (
+              <li key={type.type.name} className={`tipo ${type.type.name}`}>
+                {TransformarPrimeiraLetraMaiscula(type.type.name)}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
       <button

@@ -1,0 +1,77 @@
+h1 {
+  text-align: center;
+  font-size: 50px;
+}
+
+.titulo_input {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.filtro_tipo {
+  display: flex;
+  justify-content: end;
+  margin-right: 90px;
+}
+
+.mensagem {
+  text-align: center;
+  font-size: 30px;
+}
+
+.lista_pokemon {
+  padding: 10px 50px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  margin: 0px 10px 2px 10px;
+}
+
+.container_lista_pokemon {
+  position: relative;
+  margin: 20px;
+}
+
+.botao_voltar,
+.botao_avancar {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 10px 20px;
+}
+
+.botao_voltar:disabled {
+  opacity: 0.2;
+}
+
+.botao_voltar {
+  left: -15px; /* Ajuste para a esquerda */
+}
+
+.botao_avancar {
+  right: -15px; /* Ajuste para a direita */
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  background-color: transparent;
+}
+button:hover {
+  scale: 1.1;
+}
+
+button img {
+  width: 50px;
+}
+
+@media (max-width: 645px) {
+  .filtro_tipo {
+    justify-content: center;
+    margin-right: 0px;
+    margin-top: 20px;
+  }
+}
