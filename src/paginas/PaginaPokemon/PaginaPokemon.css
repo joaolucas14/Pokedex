@@ -52,6 +52,7 @@
 .imagem_pokemon img {
   width: var(--width-box);
   height: 300px;
+  box-shadow: 2px 1px 4px 1px #00000078;
 }
 
 .informacoes_pokemon {
@@ -60,6 +61,7 @@
   width: var(--width-box);
   padding: 0px 20px 0px 20px;
   min-height: 300px;
+  box-shadow: 2px 1px 4px 1px #00000078;
 }
 .descricao p {
   font-size: 18px;
@@ -71,6 +73,12 @@
   font-size: 30px;
 }
 
+.peso_altura {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 5px;
+}
+
 .subtitulo {
   font-weight: bolder;
   font-size: 20px;
@@ -78,6 +86,7 @@
 
 .status {
   width: var(--width-box);
+  box-shadow: 2px 1px 4px 1px #00000078;
 }
 
 .tipos {
@@ -97,6 +106,10 @@
   text-align: center;
   width: 40%;
   border-radius: 5px;
+  color: white;
+  border: 1px solid rgba(0, 0, 0, 0.289);
+  font-weight: bold;
+  box-shadow: 1px 1px 1px 0px #00000075;
 }
 
 .normal {
@@ -121,6 +134,8 @@
     var(--flying) 50%,
     rgb(201, 201, 201) 50%
   );
+  color: black;
+  font-weight: 400;
 }
 .poison {
   background-color: var(--poison);
@@ -130,6 +145,8 @@
 }
 .electric {
   background-color: var(--electric);
+  color: black;
+  font-weight: 400;
 }
 .fairy {
   background-color: var(--fairy);

@@ -16,6 +16,11 @@ h1 {
   margin-right: 90px;
 }
 
+.mensagem {
+  text-align: center;
+  font-size: 30px;
+}
+
 .lista_pokemon {
   padding: 10px 50px;
   display: flex;

@@ -11,6 +11,7 @@ import { useNavigate } from "react-router-dom";
 import Input from "../Input/Input";
 import Loading from "../Loading/Loading";
 import FiltroPorTipo from "../FiltroPorTipo/FiltroPorTipo";
+import pikachu from "../../assets/imagens/pikachu.png";
 
 export default function ListaPokemon() {
   const [loading] = useRecoilState(loadingState);
@@ -85,25 +86,37 @@ export default function ListaPokemon() {
               <img src={setaEsquerda} alt="Seta para a esquerda" />
             </button>
             <div className="lista_pokemon">
-              {pokemonsPaginados.map((pokemon: IPokemon) => (
-                <div key={pokemon.id}>
-                  <Card
-                    onClick={() => navigate(`/pokemon/${pokemon.id}`)}
-                    img={pokemon.sprites.front_default}
-                    back_img={
-                      pokemon.sprites.other["official-artwork"].front_default
-                    }
-                    nome={pokemon.name}
-                    id={pokemon.id}
-                    tipos={pokemon.types
-                      .map((type) => type.type.name)
-                      .join(" | ")}
-                    altura={pokemon.height}
-                    peso={pokemon.weight}
-                    pokemonFav={pokemon.favorito}
+              {pokemonsPaginados.length === 0 ? (
+                <p className="mensagem">
+                  Nenhum Pokémon foi encontrado
+                  <img
+                    src={pikachu}
+                    alt="Pikachu triste"
+                    style={{ width: "40px" }}
                   />
-                </div>
-              ))}
+                  .
+                </p>
+              ) : (
+                pokemonsPaginados.map((pokemon: IPokemon) => (
+                  <div key={pokemon.id}>
+                    <Card
+                      onClick={() => navigate(`/pokemon/${pokemon.id}`)}
+                      img={pokemon.sprites.front_default}
+                      back_img={
+                        pokemon.sprites.other["official-artwork"].front_default
+                      }
+                      nome={pokemon.name}
+                      id={pokemon.id}
+                      tipos={pokemon.types
+                        .map((type) => type.type.name)
+                        .join(" | ")}
+                      altura={pokemon.height}
+                      peso={pokemon.weight}
+                      pokemonFav={pokemon.favorito}
+                    />
+                  </div>
+                ))
+              )}
             </div>
             <button onClick={carregarMais} className="botao_avancar">
               <img src={setaDireita} alt="Seta para a direita" />

@@ -184,7 +184,9 @@
   transition: transform 0.3s ease, color 0.3s ease;
   z-index: 10;
 }
-
+.img_favorito {
+  width: 20px;
+}
 .favorito-button:hover {
   transform: scale(1.2);
   color: #ffd700;

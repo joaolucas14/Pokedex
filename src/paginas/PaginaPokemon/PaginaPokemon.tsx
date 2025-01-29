@@ -9,12 +9,17 @@ import { formatarTexto } from "../../utils/FormatarTexto";
 import setaDireita from "../../assets/imagens/seta_direita.png";
 import setaEsquerda from "../../assets/imagens/seta_esquerda.png";
 import "./PaginaPokemon.css";
+import usePokemons from "../../state/hooks/usePokemons";
+import estrelaPreenchido from "../../assets/imagens/estrela (1).png";
+import estrela from "../../assets/imagens/estrela (2).png";
 
 export default function PaginaPokemon() {
   const id = useParams<{ id: string }>().id;
   const { pokemon, buscarPokemonPorId } = useUnicoPokemon();
   const { pokemonDetalhes, buscarDetalhesPokemonPorNome } =
     usePokemonDetalhes();
+  const { toggleFavorito } = usePokemons();
+
   const navigate = useNavigate();
   let corDaletra = "white";
 
@@ -52,9 +57,16 @@ export default function PaginaPokemon() {
     <>
       <h1>
         {TransformarPrimeiraLetraMaiscula(nomePokemon)}
-        <span className="numero_id">{`Nª${pokemon.id} ${
-          pokemon.favorito ? "★" : "☆"
-        }`}</span>
+        <span className="numero_id">
+          {`Nª${pokemon.id}`}
+          <button onClick={() => toggleFavorito(pokemon.id)}>
+            <img
+              src={pokemon.favorito ? estrelaPreenchido : estrela}
+              alt="estrela favorito"
+              style={{ width: "30px" }}
+            />
+          </button>
+        </span>
       </h1>
       <div className="container">
         <div className="imagem_pokemon">
@@ -71,8 +83,8 @@ export default function PaginaPokemon() {
           }}
         >
           <h2>Descrição</h2>
-          <div className="descricao">
-            <p>{formatarTexto(descricao)}! </p>
+          <div className="descricao ">
+            <p>{formatarTexto(descricao)}</p>
           </div>
           {pokemonDetalhes?.evolves_from_species?.name && (
             <div className="evolui_de">
@@ -90,8 +102,13 @@ export default function PaginaPokemon() {
             )}
           </div>
           <div className="peso_altura">
-            <span className="subtitulo">Peso:</span> {pokemon.weight / 10} Kg
-            <span className="subtitulo"> Altura:</span> {pokemon.height / 10} M
+            <span className="peso">
+              <span className="subtitulo">Peso:</span> {pokemon.weight / 10} Kg
+            </span>
+            <span className="altura">
+              <span className="subtitulo"> Altura:</span> {pokemon.height / 10}{" "}
+              M
+            </span>
           </div>
         </div>
       </div>

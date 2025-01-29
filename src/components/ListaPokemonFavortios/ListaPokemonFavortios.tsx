@@ -9,6 +9,7 @@ import setaEsquerda from "../../assets/imagens/seta_esquerda.png";
 import "./ListaPokemonFavortios.css";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
+import pikachu from "../../assets/imagens/pikachu.png";
 
 export default function ListaPokemonFavoritos() {
   const [loading] = useRecoilState(loadingState);
@@ -41,7 +42,15 @@ export default function ListaPokemonFavoritos() {
         <>
           <h1 className="titulo">Meus Pokémon Favoritos</h1>
           {pokemonsFavoritos.length === 0 ? (
-            <p className="mensagem">Nenhum Pokémon foi favoritado ainda.</p>
+            <p className="mensagem">
+              Nenhum Pokémon foi favoritado ainda
+              <img
+                src={pikachu}
+                alt="Pikachu triste"
+                style={{ width: "40px" }}
+              />
+              .
+            </p>
           ) : (
             <div className="container_lista_pokemon">
               <button

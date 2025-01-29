@@ -87,7 +87,11 @@ const usePokemons = () => {
 
   const pokemonsFiltrados = (pokemons: IPokemon[]) => {
     return pokemons
-      .filter((pokemon) => pokemon.name.toLowerCase().includes(filtro))
+      .filter(
+        (pokemon) =>
+          pokemon.name.toLowerCase().includes(filtro) ||
+          pokemon.id.toString().includes(filtro)
+      )
       .filter((pokemon) =>
         tipo ? pokemon.types.some((t) => t.type.name === tipo) : true
       );

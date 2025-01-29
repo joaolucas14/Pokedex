@@ -2,6 +2,8 @@ import React from "react";
 import TransformarPrimeiraLetraMaiscula from "../../utils/TransformarPrimeiraLetraMaiscula";
 import "./Card.css";
 import usePokemons from "../../state/hooks/usePokemons";
+import estrelaPreenchido from "../../assets/imagens/estrela (1).png";
+import estrela from "../../assets/imagens/estrela (2).png";
 interface ICardProps {
   img: string;
   back_img: string;
@@ -71,7 +73,11 @@ const Card = React.memo(
               onClick={() => toggleFavorito(id)}
               className="favorito-button"
             >
-              {pokemonFav ? "★" : "☆"}
+              <img
+                src={pokemonFav ? estrelaPreenchido : estrela}
+                alt=""
+                className="img_favorito"
+              />
             </button>
           </div>
         </div>
