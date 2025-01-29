@@ -62,8 +62,6 @@ const Card = React.memo(
                       Tipos:
                       <br />
                       {tipos}
-                      <br />
-                      {`Favorito?${pokemonFav}`}
                     </strong>
                   </p>
                 </div>

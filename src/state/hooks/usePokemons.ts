@@ -1,7 +1,7 @@
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { IPokemon } from "../../interfaces/IPokemon";
 import { http } from "../../api/http";
-import { listaPokemonState, loadingState } from "../atom";
+import { listaFavoritosState, listaPokemonState, loadingState } from "../atom";
 import { useCallback, useState } from "react";
 
 const usePokemons = () => {
@@ -10,7 +10,7 @@ const usePokemons = () => {
   const setLoading = useSetRecoilState(loadingState);
   const [filtro, setFiltro] = useState<string>(""); // Filtro por nome
   const [tipo, setTipo] = useState<string>(""); // Filtro por tipo
-  const [favoritos, setFavoritos] = useState<number[]>([]); // Lista de IDs favoritos
+  const [favoritos, setFavoritos] = useRecoilState(listaFavoritosState); // Lista de IDs favoritos
 
   const aplicarFiltro = (filtro: string) => {
     setFiltro(filtro.toLowerCase());
