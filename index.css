@@ -1,0 +1,19 @@
+:root {
+  --normal: gray;
+  --grass: green;
+  --bug: lightgreen;
+  --water: blue;
+  --fire: red;
+  --flying: aqua;
+  --poison: purple;
+  --ground: brown;
+  --electric: yellow;
+  --fairy: pink;
+  --psychic: blueviolet;
+  --stell: lightgray;
+  --ice: lightskyblue;
+  --dragon: darkblue;
+  --rock: rgb(208, 118, 85);
+  --ghost: midnightblue
+  --fighting:orange;
+}

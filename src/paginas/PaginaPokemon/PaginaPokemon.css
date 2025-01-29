@@ -1,11 +1,32 @@
+:root {
+  --gap: 50px;
+  --width: 100vw;
+  --margin-bottom: 20px;
+  --min-width: 500px;
+  --max-width: 97dvw;
+  --width-box: 300px;
+}
+
 .container {
   display: flex;
   justify-content: center;
-  gap: 50px;
-  width: 100vw;
-  margin-bottom: 20px;
+  gap: var(--gap);
+  width: var(--width);
+  margin-bottom: var(--margin-bottom);
   flex-wrap: wrap;
-  min-width: 500px;
+  min-width: var(--min-width);
+  max-width: var(--max-width);
+}
+
+.container_status_tipo {
+  display: flex;
+  justify-content: center;
+  gap: var(--gap);
+  width: var(--width);
+  margin-bottom: var(--margin-bottom);
+  flex-wrap: wrap;
+  min-width: var(--min-width);
+  max-width: var(--max-width);
 }
 
 #botao_avancar {
@@ -29,19 +50,108 @@
   background-color: rgba(215, 215, 215, 0.595);
 }
 .imagem_pokemon img {
-  width: 300px;
+  width: var(--width-box);
   height: 300px;
 }
 
 .informacoes_pokemon {
   color: white;
   background-color: rgb(255, 64, 64);
-  width: 300px;
+  width: var(--width-box);
   padding: 0px 20px 0px 20px;
+  min-height: 300px;
+}
+.descricao p {
+  font-size: 18px;
 }
 
 .informacoes_pokemon h2 {
   width: 100%;
   text-align: center;
   font-size: 30px;
+}
+
+.subtitulo {
+  font-weight: bolder;
+  font-size: 20px;
+}
+
+.status {
+  width: var(--width-box);
+}
+
+.tipos {
+  width: var(--width-box);
+  padding: 0px 20px 0px 20px;
+}
+
+.lista_tipos {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.tipo {
+  padding: 3px;
+  margin-bottom: 2px;
+  text-align: center;
+  width: 40%;
+  border-radius: 5px;
+}
+
+.normal {
+  background-color: var(--normal);
+}
+.water {
+  background-color: var(--water);
+}
+.grass {
+  background-color: var(--grass);
+}
+.bug {
+  background-color: var(--bug);
+}
+.fire {
+  background-color: var(--fire);
+}
+.flying {
+  background-color: var(--flying);
+  background: linear-gradient(
+    to bottom,
+    var(--flying) 50%,
+    rgb(201, 201, 201) 50%
+  );
+}
+.poison {
+  background-color: var(--poison);
+}
+.ground {
+  background-color: var(--ground);
+}
+.electric {
+  background-color: var(--electric);
+}
+.fairy {
+  background-color: var(--fairy);
+}
+.psychic {
+  background-color: var(--psychic);
+}
+.stell {
+  background-color: var(--stell);
+}
+.ice {
+  background-color: var(--ice);
+}
+.dragon {
+  background-color: var(--dragon);
+}
+.rock {
+  background-color: var(--rock);
+}
+.ghost {
+  background-color: var(--ghost);
+}
+.fighting {
+  background-color: var(--fighting);
 }

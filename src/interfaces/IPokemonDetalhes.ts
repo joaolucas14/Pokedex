@@ -11,4 +11,7 @@ export interface IPokemonDetalhes {
   color: {
     name: string;
   };
+  evolves_from_species: {
+    name: string;
+  };
 }

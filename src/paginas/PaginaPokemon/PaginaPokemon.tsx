@@ -46,6 +46,8 @@ export default function PaginaPokemon() {
   if (!pokemon) {
     return <div>Carregando...</div>;
   }
+  console.log("pokemon:", pokemon);
+  console.log("pokemon detalhes:", pokemonDetalhes);
   return (
     <>
       <h1>
@@ -72,26 +74,60 @@ export default function PaginaPokemon() {
           <div className="descricao">
             <p>{formatarTexto(descricao)}! </p>
           </div>
+          {pokemonDetalhes?.evolves_from_species?.name && (
+            <div className="evolui_de">
+              <span className="subtitulo">Evoulução de: </span>
+              {TransformarPrimeiraLetraMaiscula(
+                pokemonDetalhes.evolves_from_species.name
+              )}
+            </div>
+          )}
           <div className="habilidades">
-            Habilidades:
+            <span className="subtitulo">Habilidades:</span>
             {pokemon.abilities.map(
               (ability) =>
                 ` ${TransformarPrimeiraLetraMaiscula(ability.ability.name)} | `
             )}
           </div>
           <div className="peso_altura">
-            Peso: {pokemon.weight / 10} Kg Altura: {pokemon.height / 10} M
+            <span className="subtitulo">Peso:</span> {pokemon.weight / 10} Kg
+            <span className="subtitulo"> Altura:</span> {pokemon.height / 10} M
           </div>
-          <div className="tipos">
-            <p>Tipos:</p>
-            <ul>
-              {pokemon.types.map((type) => (
-                <li key={type.type.name}>
-                  {TransformarPrimeiraLetraMaiscula(type.type.name)}
+        </div>
+      </div>
+      <div className="container_status_tipo">
+        <div
+          className="status"
+          style={{
+            backgroundColor: pokemonDetalhes?.color.name,
+            color: corDaletra,
+          }}
+        >
+          <ul>
+            {pokemon.stats.map(
+              (
+                stat: { stat: { name: string }; base_stat: number },
+                index: number
+              ) => (
+                <li key={index}>
+                  <strong>
+                    {TransformarPrimeiraLetraMaiscula(stat.stat.name)}:
+                  </strong>{" "}
+                  {stat.base_stat}
                 </li>
-              ))}
-            </ul>
-          </div>
+              )
+            )}
+          </ul>
+        </div>
+        <div className="tipos">
+          <span className="subtitulo">Tipos:</span>
+          <ul className="lista_tipos">
+            {pokemon.types.map((type) => (
+              <li key={type.type.name} className={`tipo ${type.type.name}`}>
+                {TransformarPrimeiraLetraMaiscula(type.type.name)}
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
       <button
