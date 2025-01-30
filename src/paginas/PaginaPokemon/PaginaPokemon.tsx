@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import useUnicoPokemon from "../../state/hooks/useUnicoPokemon";
@@ -13,20 +13,26 @@ import usePokemons from "../../state/hooks/usePokemons";
 import estrelaPreenchido from "../../assets/imagens/estrela (1).png";
 import estrela from "../../assets/imagens/estrela (2).png";
 import StatusBar from "../../components/StatusBar/StatusBar";
+import shinyImg from "../../assets/imagens/shyni.png";
+// import useVariantesPokemons from "../../state/hooks/useVariantesPokemons";
 
 export default function PaginaPokemon() {
   const id = useParams<{ id: string }>().id;
   const { pokemon, buscarPokemonPorId } = useUnicoPokemon();
   const { pokemonDetalhes, buscarDetalhesPokemonPorNome } =
     usePokemonDetalhes();
+  // const { buscarVariantesPokemon, variantesPokemons } = useVariantesPokemons();
   const { toggleFavorito } = usePokemons();
 
   const navigate = useNavigate();
   let corDaletra = "white";
 
+  const [shiny, setShiny] = useState(false);
+
   useEffect(() => {
     if (id) {
       buscarPokemonPorId(id);
+      setShiny(false);
     }
   }, [id, buscarPokemonPorId]);
 
@@ -35,6 +41,16 @@ export default function PaginaPokemon() {
       buscarDetalhesPokemonPorNome(pokemon.name);
     }
   }, [pokemon?.name, buscarDetalhesPokemonPorNome]);
+
+  // useEffect(()=>{
+  //   if(pokemonDetalhes?.varieties.length > 1){
+  //     buscarVariantesPokemon(pokemonDetalhes?.varieties)
+  //   }
+  // })
+
+  const eHShiny = () => {
+    setShiny(!shiny);
+  };
 
   const descricao =
     pokemonDetalhes?.flavor_text_entries.find(
@@ -72,7 +88,11 @@ export default function PaginaPokemon() {
       <div className="container">
         <div className="imagem_pokemon">
           <img
-            src={pokemon.sprites.other["official-artwork"].front_default}
+            src={
+              !shiny
+                ? pokemon.sprites.other["official-artwork"].front_default
+                : pokemon.sprites.other["official-artwork"].front_shiny
+            }
             alt=""
           />
         </div>
@@ -126,15 +146,36 @@ export default function PaginaPokemon() {
             corPokemon={pokemonDetalhes?.color.name}
           />
         </div>
-        <div className="tipos">
-          <span className="subtitulo">Tipos:</span>
-          <ul className="lista_tipos">
-            {pokemon.types.map((type) => (
-              <li key={type.type.name} className={`tipo ${type.type.name}`}>
-                {TransformarPrimeiraLetraMaiscula(type.type.name)}
-              </li>
-            ))}
-          </ul>
+        <div className="tipo_variantes">
+          <div className="tipos">
+            <span className="subtitulo">Tipos:</span>
+            <ul className="lista_tipos">
+              {pokemon.types.map((type) => (
+                <li key={type.type.name} className={`tipo ${type.type.name}`}>
+                  {TransformarPrimeiraLetraMaiscula(type.type.name)}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h3>Variantes:</h3>
+            <button onClick={eHShiny}>
+              <img src={shinyImg} alt="Pokemon shiny" />
+            </button>
+          </div>
+          {/* {pokemonDetalhes?.varieties &&
+            pokemonDetalhes.varieties.length > 1 && (
+              <div className="variedades">
+                <h3>Variedades:</h3>
+                <ul>
+                  {pokemonDetalhes.varieties.map((variedade) => (
+                    <li key={variedade.pokemon.name}>
+                      {TransformarPrimeiraLetraMaiscula(variedade.pokemon.name)}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )} */}
         </div>
       </div>
       <button

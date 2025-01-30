@@ -6,11 +6,11 @@ import { useCallback, useState } from "react";
 
 const usePokemons = () => {
   const [pokemonsCompletos, setListaPokemon] =
-    useRecoilState(listaPokemonState); // Agora usa Recoil
+    useRecoilState(listaPokemonState);
   const setLoading = useSetRecoilState(loadingState);
-  const [filtro, setFiltro] = useState<string>(""); // Filtro por nome
-  const [tipo, setTipo] = useState<string>(""); // Filtro por tipo
-  const [favoritos, setFavoritos] = useRecoilState(listaFavoritosState); // Lista de IDs favoritos
+  const [filtro, setFiltro] = useState<string>("");
+  const [tipo, setTipo] = useState<string>("");
+  const [favoritos, setFavoritos] = useRecoilState(listaFavoritosState);
 
   const aplicarFiltro = (filtro: string) => {
     setFiltro(filtro.toLowerCase());
@@ -23,11 +23,10 @@ const usePokemons = () => {
   const toggleFavorito = (id: number) => {
     setFavoritos((prevFavoritos) =>
       prevFavoritos.includes(id)
-        ? prevFavoritos.filter((favId) => favId !== id) // Remove da lista
+        ? prevFavoritos.filter((favId) => favId !== id)
         : [...prevFavoritos, id]
     );
 
-    // Atualiza o campo favorito na lista global de Pokémon
     setListaPokemon((pokemons) =>
       pokemons.map((pokemon) =>
         pokemon.id === id
@@ -38,7 +37,7 @@ const usePokemons = () => {
   };
 
   const pegarPokemons = useCallback(async () => {
-    if (pokemonsCompletos.length > 0) return; // Evita recarregar se já existem dados
+    if (pokemonsCompletos.length > 0) return;
     setLoading(true);
     try {
       const lotes = [
@@ -50,34 +49,24 @@ const usePokemons = () => {
       const detalhes: IPokemon[] = [];
 
       for (const lote of lotes) {
-        const resposta = await http.get("/pokemon", {
-          params: {
-            limit: lote.limit,
-            offset: lote.offset,
-          },
-        });
+        const resposta = await http.get("/pokemon", { params: lote });
 
         const detalhesLote = await Promise.all(
-          resposta.data.results.map((pokemon: IPokemon) =>
-            http.get(pokemon.url).then((res) => {
-              const pokemonDetalhado = res.data;
-              return {
-                ...pokemonDetalhado,
-                favorito: favoritos.includes(pokemonDetalhado.id), // Define favorito baseado na lista
-              };
-            })
-          )
+          resposta.data.results.map(async (pokemon: { url: string }) => {
+            const res = await http.get(pokemon.url);
+            return {
+              ...res.data,
+              favorito: favoritos.includes(res.data.id),
+            };
+          })
         );
 
         detalhes.push(...detalhesLote);
-
-        // Aguarda um pequeno intervalo antes de buscar o próximo lote
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // 1 segundo
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
       detalhes.sort((a, b) => a.id - b.id);
-
-      setListaPokemon(detalhes); // Atualiza o estado global com Recoil
+      setListaPokemon(detalhes);
     } catch (erro) {
       console.error("Erro ao buscar Pokémon:", erro);
     } finally {
@@ -99,8 +88,7 @@ const usePokemons = () => {
 
   const paginarPokemons = (pagina: number, pokemonsFiltrados: IPokemon[]) => {
     const inicio = (pagina - 1) * 12;
-    const fim = inicio + 12;
-    return pokemonsFiltrados.slice(inicio, fim);
+    return pokemonsFiltrados.slice(inicio, inicio + 12);
   };
 
   return {
@@ -113,7 +101,7 @@ const usePokemons = () => {
     pokemonsFiltrados,
     paginarPokemons,
     toggleFavorito,
-    favoritos, // Exponha a lista de favoritos caso precise em outros componentes
+    favoritos,
   };
 };
 
