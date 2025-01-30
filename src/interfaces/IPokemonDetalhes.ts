@@ -1,3 +1,5 @@
+import { IVariantesPokemons } from "./IVariantesPokemons";
+
 export interface IPokemonDetalhes {
   flavor_text_entries: {
     flavor_text: string;
@@ -14,4 +16,5 @@ export interface IPokemonDetalhes {
   evolves_from_species: {
     name: string;
   };
+  varieties: IVariantesPokemons[];
 }

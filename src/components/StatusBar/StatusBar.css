@@ -1,0 +1,30 @@
+.skills {
+  padding: 0px 20px;
+}
+.skills h1 {
+  margin: 10px;
+  font-size: 40px;
+}
+
+.skills ul {
+  list-style: none;
+  padding: 0px;
+}
+
+.skills ul li {
+  margin: 10px 0px;
+}
+
+.skills .barras {
+  background-color: #ccc;
+  display: block;
+  height: 10px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.barras > span {
+  height: 10px;
+  position: absolute;
+}
