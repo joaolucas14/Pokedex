@@ -12,6 +12,7 @@ import "./PaginaPokemon.css";
 import usePokemons from "../../state/hooks/usePokemons";
 import estrelaPreenchido from "../../assets/imagens/estrela (1).png";
 import estrela from "../../assets/imagens/estrela (2).png";
+import StatusBar from "../../components/StatusBar/StatusBar";
 
 export default function PaginaPokemon() {
   const id = useParams<{ id: string }>().id;
@@ -54,7 +55,7 @@ export default function PaginaPokemon() {
   console.log("pokemon:", pokemon);
   console.log("pokemon detalhes:", pokemonDetalhes);
   return (
-    <>
+    <div>
       <h1>
         {TransformarPrimeiraLetraMaiscula(nomePokemon)}
         <span className="numero_id">
@@ -120,21 +121,10 @@ export default function PaginaPokemon() {
             color: corDaletra,
           }}
         >
-          <ul>
-            {pokemon.stats.map(
-              (
-                stat: { stat: { name: string }; base_stat: number },
-                index: number
-              ) => (
-                <li key={index}>
-                  <strong>
-                    {TransformarPrimeiraLetraMaiscula(stat.stat.name)}:
-                  </strong>{" "}
-                  {stat.base_stat}
-                </li>
-              )
-            )}
-          </ul>
+          <StatusBar
+            pokemon={pokemon}
+            corPokemon={pokemonDetalhes?.color.name}
+          />
         </div>
         <div className="tipos">
           <span className="subtitulo">Tipos:</span>
@@ -163,6 +153,6 @@ export default function PaginaPokemon() {
       >
         <img src={setaDireita} alt="Seta direita" />
       </button>
-    </>
+    </div>
   );
 }
