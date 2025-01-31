@@ -113,6 +113,13 @@
   box-shadow: 1px 1px 1px 0px #00000075;
 }
 
+.variantes {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
 .normal {
   background-color: var(--normal);
 }
@@ -172,4 +179,11 @@
 }
 .fighting {
   background-color: var(--fighting);
+}
+
+.dark {
+  background-color: var(--dark);
+}
+.steel {
+  background-color: var(--steel);
 }

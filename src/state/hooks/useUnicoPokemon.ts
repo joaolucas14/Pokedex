@@ -28,11 +28,7 @@ export default function useUnicoPokemon() {
     async (nome: string) => {
       try {
         const resposta = await http.get(`pokemon/${nome}`);
-
-        // Verifica se o Pokémon já está nos favoritos
         const favorito = favoritos.some((fav) => fav === resposta.data.id);
-
-        // Atualiza o estado mantendo o status de favorito
         setPokemon({ ...resposta.data, favorito });
       } catch (erro) {
         console.log("Erro ao buscar o pokemon:", erro);
