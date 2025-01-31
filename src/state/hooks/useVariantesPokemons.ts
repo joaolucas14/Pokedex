@@ -1,43 +1,22 @@
 import { useRecoilState } from "recoil";
-import { variantesPokemonsState } from "../atom";
+import { http } from "../../api/http";
 import { useCallback } from "react";
+import { variantesPokemonState } from "../atom";
 
-import axios from "axios";
-import { IVariantesPokemons } from "../../interfaces/IVariantesPokemons";
-
-// export default function usePokemonTypes() {
-//   const [pokemonTypes, setPokemonTypes] = useRecoilState(tiposPokemonState);
-
-//   const buscarTiposPokemon = useCallback(async () => {
-//     try {
-//       const resposta = await http.get("type");
-//       setPokemonTypes(resposta.data.results);
-//     } catch (erro) {
-//       console.log("Erro ao buscar tipos de pokémon:", erro);
-//     }
-//   }, [setPokemonTypes]);
-//   return {
-//     pokemonTypes,
-//     buscarTiposPokemon,
-//   };
-// }
-
-export default function useVariantesPokemons(lista: IVariantesPokemons[]) {
-  const [variantesPokemons, setVariantesPokemons] = useRecoilState(
-    variantesPokemonsState
+export default function useVariantesPokemons() {
+  const [variantePokemon, setVariantePokemon] = useRecoilState(
+    variantesPokemonState
   );
-  const buscarVariantesPokemon = useCallback(async () => {
-    try {
-      lista.map(async (item) => {
-        const resposta = await axios.get(`${item.pokemon.url}`);
-        setVariantesPokemons(resposta.data.results);
-      });
-    } catch (erro) {
-      console.log("Erro ao buscar Variante do pokémon", erro);
-    }
-  }, [lista, setVariantesPokemons]);
-  return {
-    variantesPokemons,
-    buscarVariantesPokemon,
-  };
+  const buscarVariantePorNome = useCallback(
+    async (nome: string) => {
+      try {
+        const resposta = await http.get(`pokemon/${nome}`);
+        setVariantePokemon(resposta.data);
+      } catch (erro) {
+        console.log("Erro ao buscar o pokemon:", erro);
+      }
+    },
+    [setVariantePokemon]
+  );
+  return { buscarVariantePorNome, variantePokemon, setVariantePokemon };
 }

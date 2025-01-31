@@ -14,15 +14,16 @@ import estrelaPreenchido from "../../assets/imagens/estrela (1).png";
 import estrela from "../../assets/imagens/estrela (2).png";
 import StatusBar from "../../components/StatusBar/StatusBar";
 import shinyImg from "../../assets/imagens/shyni.png";
-// import useVariantesPokemons from "../../state/hooks/useVariantesPokemons";
+import useVariantesPokemons from "../../state/hooks/useVariantesPokemons";
 
 export default function PaginaPokemon() {
   const id = useParams<{ id: string }>().id;
   const { pokemon, buscarPokemonPorId } = useUnicoPokemon();
   const { pokemonDetalhes, buscarDetalhesPokemonPorNome } =
     usePokemonDetalhes();
-  // const { buscarVariantesPokemon, variantesPokemons } = useVariantesPokemons();
   const { toggleFavorito } = usePokemons();
+  const { buscarVariantePorNome, variantePokemon, setVariantePokemon } =
+    useVariantesPokemons();
 
   const navigate = useNavigate();
   let corDaletra = "white";
@@ -33,8 +34,9 @@ export default function PaginaPokemon() {
     if (id) {
       buscarPokemonPorId(id);
       setShiny(false);
+      setVariantePokemon(null);
     }
-  }, [id, buscarPokemonPorId]);
+  }, [id, buscarPokemonPorId, setVariantePokemon]);
 
   useEffect(() => {
     if (pokemon?.name) {
@@ -42,22 +44,20 @@ export default function PaginaPokemon() {
     }
   }, [pokemon?.name, buscarDetalhesPokemonPorNome]);
 
-  // useEffect(()=>{
-  //   if(pokemonDetalhes?.varieties.length > 1){
-  //     buscarVariantesPokemon(pokemonDetalhes?.varieties)
-  //   }
-  // })
-
   const eHShiny = () => {
     setShiny(!shiny);
+  };
+
+  const pegandoVariante = (evento: React.ChangeEvent<HTMLSelectElement>) => {
+    buscarVariantePorNome(evento.target.value);
+    console.log("variante: ", variantePokemon);
+    console.log(pokemonDetalhes);
   };
 
   const descricao =
     pokemonDetalhes?.flavor_text_entries.find(
       (entry) => entry.language.name === "en"
     )?.flavor_text || "Descrição não disponível";
-
-  const nomePokemon = pokemon?.name || "";
 
   if (
     pokemonDetalhes?.color.name === "white" ||
@@ -68,12 +68,14 @@ export default function PaginaPokemon() {
   if (!pokemon) {
     return <div>Carregando...</div>;
   }
-  console.log("pokemon:", pokemon);
-  console.log("pokemon detalhes:", pokemonDetalhes);
+  // console.log("pokemon:", pokemon);
+  // console.log("pokemon detalhes:", pokemonDetalhes);
   return (
     <div>
       <h1>
-        {TransformarPrimeiraLetraMaiscula(nomePokemon)}
+        {variantePokemon
+          ? TransformarPrimeiraLetraMaiscula(variantePokemon.name)
+          : TransformarPrimeiraLetraMaiscula(pokemon.name)}
         <span className="numero_id">
           {`Nª${pokemon.id}`}
           <button onClick={() => toggleFavorito(pokemon.id)}>
@@ -90,10 +92,14 @@ export default function PaginaPokemon() {
           <img
             src={
               !shiny
-                ? pokemon.sprites.other["official-artwork"].front_default
-                : pokemon.sprites.other["official-artwork"].front_shiny
+                ? variantePokemon?.sprites?.other["official-artwork"]
+                    ?.front_default ||
+                  pokemon.sprites.other["official-artwork"].front_default
+                : variantePokemon?.sprites?.other["official-artwork"]
+                    ?.front_shiny ||
+                  pokemon.sprites.other["official-artwork"].front_shiny
             }
-            alt=""
+            alt={pokemon.name}
           />
         </div>
         <div
@@ -117,17 +123,33 @@ export default function PaginaPokemon() {
           )}
           <div className="habilidades">
             <span className="subtitulo">Habilidades:</span>
-            {pokemon.abilities.map(
-              (ability) =>
-                ` ${TransformarPrimeiraLetraMaiscula(ability.ability.name)} | `
-            )}
+            {variantePokemon
+              ? variantePokemon.abilities.map(
+                  (ability) =>
+                    ` ${TransformarPrimeiraLetraMaiscula(
+                      ability.ability.name
+                    )} | `
+                )
+              : pokemon.abilities.map(
+                  (ability) =>
+                    ` ${TransformarPrimeiraLetraMaiscula(
+                      ability.ability.name
+                    )} | `
+                )}
           </div>
           <div className="peso_altura">
             <span className="peso">
-              <span className="subtitulo">Peso:</span> {pokemon.weight / 10} Kg
+              <span className="subtitulo">Peso:</span>{" "}
+              {variantePokemon
+                ? variantePokemon.weight / 10
+                : pokemon.weight / 10}{" "}
+              Kg
             </span>
             <span className="altura">
-              <span className="subtitulo"> Altura:</span> {pokemon.height / 10}{" "}
+              <span className="subtitulo"> Altura:</span>{" "}
+              {variantePokemon
+                ? variantePokemon.height / 10
+                : pokemon.height / 10}{" "}
               M
             </span>
           </div>
@@ -142,7 +164,7 @@ export default function PaginaPokemon() {
           }}
         >
           <StatusBar
-            pokemon={pokemon}
+            pokemon={variantePokemon ? variantePokemon : pokemon}
             corPokemon={pokemonDetalhes?.color.name}
           />
         </div>
@@ -150,32 +172,49 @@ export default function PaginaPokemon() {
           <div className="tipos">
             <span className="subtitulo">Tipos:</span>
             <ul className="lista_tipos">
-              {pokemon.types.map((type) => (
-                <li key={type.type.name} className={`tipo ${type.type.name}`}>
-                  {TransformarPrimeiraLetraMaiscula(type.type.name)}
-                </li>
-              ))}
+              {variantePokemon
+                ? variantePokemon.types.map((type) => (
+                    <li
+                      key={type.type.name}
+                      className={`tipo ${type.type.name}`}
+                    >
+                      {TransformarPrimeiraLetraMaiscula(type.type.name)}
+                    </li>
+                  ))
+                : pokemon.types.map((type) => (
+                    <li
+                      key={type.type.name}
+                      className={`tipo ${type.type.name}`}
+                    >
+                      {TransformarPrimeiraLetraMaiscula(type.type.name)}
+                    </li>
+                  ))}
             </ul>
           </div>
-          <div>
+          <div className="variantes">
             <h3>Variantes:</h3>
+
+            {pokemonDetalhes?.varieties &&
+              pokemonDetalhes.varieties.length > 1 && (
+                <div className="variedades">
+                  <select onChange={pegandoVariante}>
+                    {pokemonDetalhes.varieties.map((variedade) => (
+                      <option
+                        key={variedade.pokemon.name}
+                        value={variedade.pokemon.name}
+                      >
+                        {TransformarPrimeiraLetraMaiscula(
+                          variedade.pokemon.name
+                        )}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
             <button onClick={eHShiny}>
               <img src={shinyImg} alt="Pokemon shiny" />
             </button>
           </div>
-          {/* {pokemonDetalhes?.varieties &&
-            pokemonDetalhes.varieties.length > 1 && (
-              <div className="variedades">
-                <h3>Variedades:</h3>
-                <ul>
-                  {pokemonDetalhes.varieties.map((variedade) => (
-                    <li key={variedade.pokemon.name}>
-                      {TransformarPrimeiraLetraMaiscula(variedade.pokemon.name)}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )} */}
         </div>
       </div>
       <button

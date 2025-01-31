@@ -54,6 +54,7 @@ const usePokemons = () => {
         const detalhesLote = await Promise.all(
           resposta.data.results.map(async (pokemon: { url: string }) => {
             const res = await http.get(pokemon.url);
+
             return {
               ...res.data,
               favorito: favoritos.includes(res.data.id),
