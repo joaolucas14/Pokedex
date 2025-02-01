@@ -3,7 +3,7 @@ header {
   background-color: red;
   width: 100%;
   justify-content: space-between;
-  min-width: 100dvw;
+  min-width: 98.7dvw;
 }
 header img {
   width: 100px;
@@ -45,6 +45,7 @@ header div {
   header {
     flex-direction: column;
     align-items: center;
+    min-width: 100dvw;
   }
   header div {
     margin-left: 0;

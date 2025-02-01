@@ -1,0 +1,12 @@
+.select {
+  padding: 2px;
+  cursor: pointer;
+  line-height: 3em;
+  border-radius: 30px;
+  color: #646464;
+  background-color: #f4f2f2;
+}
+.select:focus {
+  outline: none;
+  border: 1px solid red;
+}
