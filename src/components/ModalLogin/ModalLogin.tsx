@@ -65,7 +65,6 @@ export default function ModalLogin() {
             </button>
             <button className="button2">Sign Up</button>
           </div>
-          <button className="button3">Forgot Password</button>
         </form>
       </Modal>
     </div>
