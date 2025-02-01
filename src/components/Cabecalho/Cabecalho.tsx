@@ -1,9 +1,9 @@
 import logo from "../../assets/imagens/logo.png";
 import "./Cabecalho.css";
-import login from "./img/login.png";
 import cadastro from "./img/cadastro.png";
 import favorito from "./img/favorito (2).png";
 import { Link } from "react-router-dom";
+import ModalLogin from "../ModalLogin/ModalLogin";
 
 export default function Cabecalho() {
   return (
@@ -21,12 +21,8 @@ export default function Cabecalho() {
             <h2>Favoritos</h2>
           </div>
         </Link>
-        <Link to="#" className="link">
-          <div className="entrar">
-            <img src={login} alt="" />
-            <h2>Entrar</h2>
-          </div>
-        </Link>
+        {/* Utilize o componente ModalLogin para abrir a modal de login */}
+        <ModalLogin />
         <Link to="#" className="link">
           <div className="cadastrar">
             <img src={cadastro} alt="" />
