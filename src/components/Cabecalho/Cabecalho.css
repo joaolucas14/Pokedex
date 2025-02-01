@@ -3,7 +3,7 @@ header {
   background-color: red;
   width: 100%;
   justify-content: space-between;
-  min-width: 500px;
+  min-width: 100dvw;
 }
 header img {
   width: 100px;

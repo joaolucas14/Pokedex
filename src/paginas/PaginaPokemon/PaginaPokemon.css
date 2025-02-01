@@ -2,7 +2,7 @@
   --gap: 50px;
   --width: 100vw;
   --margin-bottom: 20px;
-  --min-width: 500px;
+  --min-width: 100dvw;
   --max-width: 97dvw;
   --width-box: 300px;
 }
@@ -31,7 +31,6 @@
 
 #botao_avancar {
   right: 5px;
-  padding: 0px;
 }
 #botao_voltar {
   left: -5px;
@@ -186,4 +185,19 @@
 }
 .steel {
   background-color: var(--steel);
+}
+
+@media (max-width: 400px) {
+  #botao_avancar {
+    right: -23px;
+  }
+  #botao_avancar img {
+    width: 40px;
+  }
+  #botao_voltar {
+    left: -23px;
+  }
+  #botao_voltar img {
+    width: 40px;
+  }
 }
