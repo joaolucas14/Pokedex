@@ -29,7 +29,7 @@
   text-align: center;
   margin: 2em;
   color: black;
-  font-size: 1.2em;
+  font-size: 1.5em;
 }
 
 .field {
@@ -52,8 +52,8 @@
   fill: white;
 }
 
-.field input {
-  color: white;
+.field input::placeholder {
+  color: rgba(255, 255, 255, 0.475);
 }
 
 .input-field {
