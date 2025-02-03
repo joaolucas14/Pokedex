@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import usePokemonTypes from "../../state/hooks/usePokemonTypes";
+import "./FiltroPorTipo.css";
 
 interface IFiltroPorTipoProps {
   aoDigitarFiltroPorTipo: (event: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -16,10 +17,10 @@ export default function FiltroPorTipo({
   }, [buscarTiposPokemon]);
 
   return (
-    <select onChange={aoDigitarFiltroPorTipo} className="select-tipo">
+    <select onChange={aoDigitarFiltroPorTipo} className="select-tipo select">
       <option value="">Selecione um tipo</option>
-      {pokemonTypes.map((tipo, index) => (
-        <option key={`${tipo.id}-${index}`} value={tipo.name}>
+      {pokemonTypes.map((tipo) => (
+        <option key={tipo.name} value={tipo.name}>
           {tipo.name}
         </option>
       ))}

@@ -50,8 +50,6 @@ export default function PaginaPokemon() {
 
   const pegandoVariante = (evento: React.ChangeEvent<HTMLSelectElement>) => {
     buscarVariantePorNome(evento.target.value);
-    console.log("variante: ", variantePokemon);
-    console.log(pokemonDetalhes);
   };
 
   const descricao =
@@ -197,7 +195,7 @@ export default function PaginaPokemon() {
             {pokemonDetalhes?.varieties &&
               pokemonDetalhes.varieties.length > 1 && (
                 <div className="variedades">
-                  <select onChange={pegandoVariante}>
+                  <select onChange={pegandoVariante} className="select">
                     {pokemonDetalhes.varieties.map((variedade) => (
                       <option
                         key={variedade.pokemon.name}
