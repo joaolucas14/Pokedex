@@ -105,3 +105,9 @@
   background-color: #f40c0c;
   color: white;
 }
+
+@media (max-width: 645px) {
+  .entrar h2 {
+    display: none;
+  }
+}

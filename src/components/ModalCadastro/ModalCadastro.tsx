@@ -2,9 +2,13 @@ import { useState } from "react";
 import Modal from "../Modal/Modal";
 import cadastro from "../../assets/imagens/cadastro.png";
 import "./ModalCadastro.css";
+import http from "../../http";
 
 export default function ModalCadastro() {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [user, setUser] = useState("");
+  const [senha, setSenha] = useState("");
+  const [senhaConfirmada, setSenhaConfirmada] = useState("");
 
   const openModal = () => {
     setModalOpen(true);
@@ -13,6 +17,25 @@ export default function ModalCadastro() {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  const aoSubmeterFormulario = (evento: React.FormEvent<HTMLFormElement>) => {
+    evento.preventDefault();
+    const usuario = {
+      user,
+      senha,
+      senhaConfirmada,
+    };
+    http
+      .post("/public/registrar", usuario)
+      .then(() => {
+        alert("Usuario cadastrado com sucesso");
+        setUser("");
+        setSenha("");
+        closeModal();
+      })
+      .catch(() => alert("OPS! Alguma coisa deu errado"));
+  };
+
   return (
     <div>
       <button onClick={openModal}>
@@ -22,7 +45,7 @@ export default function ModalCadastro() {
         </div>
       </button>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <form className="form">
+        <form className="form" onSubmit={aoSubmeterFormulario}>
           <p id="heading">Cadastre-se</p>
           <div className="field">
             <svg
@@ -40,6 +63,8 @@ export default function ModalCadastro() {
               placeholder="Usuário"
               className="input-field"
               type="text"
+              value={user}
+              onChange={(evento) => setUser(evento.target.value)}
             />
           </div>
           <div className="field">
@@ -57,6 +82,8 @@ export default function ModalCadastro() {
               placeholder="Senha"
               className="input-field"
               type="password"
+              value={senha}
+              onChange={(evento) => setSenha(evento.target.value)}
             />
           </div>
           <div className="field">
@@ -74,13 +101,15 @@ export default function ModalCadastro() {
               placeholder="Confirme sua Senha"
               className="input-field"
               type="password"
+              value={senhaConfirmada}
+              onChange={(evento) => setSenhaConfirmada(evento.target.value)}
             />
           </div>
           <div className="btn">
             <button className="button1">
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entrar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </button>
-            <button className="button2">Sign Up</button>
+            {/* <button className="button2">Sign Up</button> */}
           </div>
         </form>
       </Modal>
