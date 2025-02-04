@@ -20,19 +20,24 @@ export default function ModalCadastro() {
 
   const aoSubmeterFormulario = (evento: React.FormEvent<HTMLFormElement>) => {
     evento.preventDefault();
-    const usuario = {
-      username,
-      senha,
-    };
-    http
-      .post("/public/registrar", usuario)
-      .then(() => {
-        alert("Usuario cadastrado com sucesso");
-        setUsername("");
-        setSenha("");
-        closeModal();
-      })
-      .catch(() => alert("OPS! Alguma coisa deu errado"));
+    if (senha !== senhaConfirmada) {
+      alert("Senhas diferentes, por favor digite a mesma senha");
+    } else {
+      const usuario = {
+        username,
+        senha,
+      };
+      http
+        .post("/public/registrar", usuario)
+        .then(() => {
+          alert("Usuario cadastrado com sucesso");
+          setUsername("");
+          setSenha("");
+          setSenhaConfirmada("");
+          closeModal();
+        })
+        .catch(() => alert("OPS! Alguma coisa deu errado"));
+    }
   };
 
   return (

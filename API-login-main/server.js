@@ -23,7 +23,7 @@ function verifyToken(token) {
   );
 }
 
-function usuarioExiste({ username, senha }) {
+function usuarioExiste(username, senha) {
   return (
     userdb.usuarios.findIndex(
       (user) => user.username === username && user.senha === senha
@@ -33,7 +33,12 @@ function usuarioExiste({ username, senha }) {
 
 server.post("/public/registrar", (req, res) => {
   const { username, senha } = req.body;
-
+  if (usuarioExiste(username, senha)) {
+    console.log(username, senha, "ja existe");
+  } else {
+    console.log(username, senha);
+    // colocar a logica de usuario ja existente
+  }
   fs.readFile("./usuarios.json", (err, data) => {
     if (err) {
       const status = 401;
@@ -51,6 +56,7 @@ server.post("/public/registrar", (req, res) => {
       id: last_item_id + 1,
       username,
       senha,
+      favoritos: [],
     });
     fs.writeFile("./usuarios.json", JSON.stringify(json), (err) => {
       if (err) {
