@@ -6,7 +6,7 @@ import http from "../../http";
 
 export default function ModalCadastro() {
   const [isModalOpen, setModalOpen] = useState(false);
-  const [user, setUser] = useState("");
+  const [username, setUsername] = useState("");
   const [senha, setSenha] = useState("");
   const [senhaConfirmada, setSenhaConfirmada] = useState("");
 
@@ -21,15 +21,14 @@ export default function ModalCadastro() {
   const aoSubmeterFormulario = (evento: React.FormEvent<HTMLFormElement>) => {
     evento.preventDefault();
     const usuario = {
-      user,
+      username,
       senha,
-      senhaConfirmada,
     };
     http
       .post("/public/registrar", usuario)
       .then(() => {
         alert("Usuario cadastrado com sucesso");
-        setUser("");
+        setUsername("");
         setSenha("");
         closeModal();
       })
@@ -63,8 +62,8 @@ export default function ModalCadastro() {
               placeholder="Usuário"
               className="input-field"
               type="text"
-              value={user}
-              onChange={(evento) => setUser(evento.target.value)}
+              value={username}
+              onChange={(evento) => setUsername(evento.target.value)}
             />
           </div>
           <div className="field">
