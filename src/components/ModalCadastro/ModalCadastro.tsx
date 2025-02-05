@@ -36,7 +36,7 @@ export default function ModalCadastro() {
           setSenhaConfirmada("");
           closeModal();
         })
-        .catch(() => alert("OPS! Alguma coisa deu errado"));
+        .catch((erro) => alert(erro));
     }
   };
 

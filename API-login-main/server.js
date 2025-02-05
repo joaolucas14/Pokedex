@@ -75,7 +75,7 @@ server.post("/public/registrar", (req, res) => {
 
 server.post("/public/login", (req, res) => {
   const { username, senha } = req.body;
-  if (!usuarioExiste({ username, senha })) {
+  if (!usuarioExiste(username, senha)) {
     const status = 401;
     const message = "Usuario ou senha incorretos!";
     res.status(status).json({ status, message });

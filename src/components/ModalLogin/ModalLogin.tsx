@@ -2,9 +2,16 @@ import { useState } from "react";
 import Modal from "../Modal/Modal";
 import entrar from "../../assets/imagens/login.png";
 import "./ModalLogin.css";
+import http from "../../http";
 
-export default function ModalLogin() {
+interface PropsModalLoginUsuario {
+  aoEfetuarLogin: () => void;
+}
+
+export default function ModalLogin({ aoEfetuarLogin }: PropsModalLoginUsuario) {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [username, setUsername] = useState("");
+  const [senha, setSenha] = useState("");
 
   const openModal = () => {
     setModalOpen(true);
@@ -13,6 +20,25 @@ export default function ModalLogin() {
   const closeModal = () => {
     setModalOpen(false);
   };
+
+  const aoSubmeterFormulario = (evento: React.FormEvent<HTMLFormElement>) => {
+    evento.preventDefault();
+    const usuario = {
+      username,
+      senha,
+    };
+    http
+      .post("/public/login", usuario)
+      .then((resposta) => {
+        sessionStorage.setItem("token", resposta.data.access_token);
+        setUsername("");
+        setUsername("");
+        closeModal();
+        aoEfetuarLogin();
+      })
+      .catch((erro) => alert(erro));
+  };
+
   return (
     <div>
       <button onClick={openModal}>
@@ -22,7 +48,7 @@ export default function ModalLogin() {
         </div>
       </button>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        <form className="form">
+        <form className="form" onSubmit={aoSubmeterFormulario}>
           <p id="heading">Login</p>
           <div className="field">
             <svg
@@ -40,6 +66,8 @@ export default function ModalLogin() {
               placeholder="Usuário"
               className="input-field"
               type="text"
+              value={username}
+              onChange={(evento) => setUsername(evento.target.value)}
             />
           </div>
           <div className="field">
@@ -57,6 +85,8 @@ export default function ModalLogin() {
               placeholder="Senha"
               className="input-field"
               type="password"
+              value={senha}
+              onChange={(evento) => setSenha(evento.target.value)}
             />
           </div>
           <div className="btn">
