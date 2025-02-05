@@ -4,14 +4,23 @@ import favorito from "./img/favorito (2).png";
 import { Link } from "react-router-dom";
 import ModalLogin from "../ModalLogin/ModalLogin";
 import ModalCadastro from "../ModalCadastro/ModalCadastro";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Cabecalho() {
   const token = sessionStorage.getItem("token");
-
   const [usuarioEstaLogado, setUsuarioEstaLogado] = useState<boolean>(
     token != null
   );
+  const [nomeUsuario, setNomeUsuario] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (usuarioEstaLogado) {
+      const usuario = sessionStorage.getItem("username");
+      if (usuario) {
+        setNomeUsuario(usuario);
+      }
+    }
+  }, [usuarioEstaLogado]);
 
   const aoEfetuarLogin = () => {
     setUsuarioEstaLogado(true);
@@ -27,6 +36,9 @@ export default function Cabecalho() {
       <div className="menu">
         {usuarioEstaLogado && (
           <Link to="/favoritos" className="link">
+            <div>
+              <p>{`Ola ${nomeUsuario}`}</p>
+            </div>
             <div className="entrar">
               <img src={favorito} alt="" />
               <h2>Favoritos</h2>
