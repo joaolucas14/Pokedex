@@ -1,29 +1,26 @@
 import logo from "../../assets/imagens/logo.png";
 import "./Cabecalho.css";
 import favorito from "./img/favorito (2).png";
-import { Link } from "react-router-dom";
+import logout from "./img/logout.png";
+import { Link, useNavigate } from "react-router-dom";
 import ModalLogin from "../ModalLogin/ModalLogin";
 import ModalCadastro from "../ModalCadastro/ModalCadastro";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function Cabecalho() {
   const token = sessionStorage.getItem("token");
   const [usuarioEstaLogado, setUsuarioEstaLogado] = useState<boolean>(
     token != null
   );
-  const [nomeUsuario, setNomeUsuario] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (usuarioEstaLogado) {
-      const usuario = sessionStorage.getItem("username");
-      if (usuario) {
-        setNomeUsuario(usuario);
-      }
-    }
-  }, [usuarioEstaLogado]);
+  const navigate = useNavigate();
 
   const aoEfetuarLogin = () => {
     setUsuarioEstaLogado(true);
+  };
+  const EfetuarLogout = () => {
+    setUsuarioEstaLogado(false);
+    sessionStorage.removeItem("token");
+    navigate("/");
   };
   return (
     <header>
@@ -35,15 +32,18 @@ export default function Cabecalho() {
       </Link>
       <div className="menu">
         {usuarioEstaLogado && (
-          <Link to="/favoritos" className="link">
-            <div>
-              <p>{`Ola ${nomeUsuario}`}</p>
+          <>
+            <Link to="/favoritos" className="link">
+              <div className="entrar">
+                <img src={favorito} alt="" />
+                <h2>Favoritos</h2>
+              </div>
+            </Link>
+            <div className="logout" onClick={EfetuarLogout}>
+              <img src={logout} alt="" />
+              <h2>Deslogar</h2>
             </div>
-            <div className="entrar">
-              <img src={favorito} alt="" />
-              <h2>Favoritos</h2>
-            </div>
-          </Link>
+          </>
         )}
 
         {!usuarioEstaLogado && (

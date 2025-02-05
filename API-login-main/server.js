@@ -34,10 +34,11 @@ function usuarioExiste(username, senha) {
 server.post("/public/registrar", (req, res) => {
   const { username, senha } = req.body;
   if (usuarioExiste(username, senha)) {
-    alert("Este usuário já existe");
+    const status = 500;
+    const message = "Usuario já existente!";
+    res.status(status).json({ status, message });
+    return;
   } else {
-    // colocar a logica de usuario ja existente
-
     fs.readFile("./usuarios.json", (err, data) => {
       if (err) {
         const status = 401;

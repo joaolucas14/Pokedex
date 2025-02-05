@@ -36,7 +36,7 @@ export default function ModalCadastro() {
           setSenhaConfirmada("");
           closeModal();
         })
-        .catch((erro) => alert(erro));
+        .catch(() => alert("Usuário já existente"));
     }
   };
 
