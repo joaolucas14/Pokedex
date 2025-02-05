@@ -34,48 +34,49 @@ function usuarioExiste(username, senha) {
 server.post("/public/registrar", (req, res) => {
   const { username, senha } = req.body;
   if (usuarioExiste(username, senha)) {
-    console.log(username, senha, "ja existe");
+    alert("Este usuário já existe");
   } else {
-    console.log(username, senha);
     // colocar a logica de usuario ja existente
-  }
-  fs.readFile("./usuarios.json", (err, data) => {
-    if (err) {
-      const status = 401;
-      const message = err;
-      res.status(status).json({ status, message });
-      return;
-    }
 
-    const json = JSON.parse(data.toString());
-
-    const last_item_id =
-      json.usuarios.length > 0 ? json.usuarios[json.usuarios.length - 1].id : 0;
-
-    json.usuarios.push({
-      id: last_item_id + 1,
-      username,
-      senha,
-      favoritos: [],
-    });
-    fs.writeFile("./usuarios.json", JSON.stringify(json), (err) => {
+    fs.readFile("./usuarios.json", (err, data) => {
       if (err) {
         const status = 401;
         const message = err;
         res.status(status).json({ status, message });
         return;
       }
-    });
-    userdb = json;
-  });
 
+      const json = JSON.parse(data.toString());
+
+      const last_item_id =
+        json.usuarios.length > 0
+          ? json.usuarios[json.usuarios.length - 1].id
+          : 0;
+
+      json.usuarios.push({
+        id: last_item_id + 1,
+        username,
+        senha,
+        favoritos: [],
+      });
+      fs.writeFile("./usuarios.json", JSON.stringify(json), (err) => {
+        if (err) {
+          const status = 401;
+          const message = err;
+          res.status(status).json({ status, message });
+          return;
+        }
+      });
+      userdb = json;
+    });
+  }
   const access_token = createToken({ username, senha });
   res.status(200).json({ access_token });
 });
 
 server.post("/public/login", (req, res) => {
   const { username, senha } = req.body;
-  if (!usuarioExiste({ username, senha })) {
+  if (!usuarioExiste(username, senha)) {
     const status = 401;
     const message = "Usuario ou senha incorretos!";
     res.status(status).json({ status, message });
