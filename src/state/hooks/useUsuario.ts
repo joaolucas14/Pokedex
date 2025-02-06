@@ -1,11 +1,12 @@
 import { useRecoilState } from "recoil";
 import { api } from "../../http";
 import { IUsuario } from "../../interfaces/IUsuario";
-import { userState } from "../atom";
+import { userLogadoState, userState } from "../atom";
 import { useCallback } from "react";
 
 export default function useUsuario() {
   const [usuario, setUsuario] = useRecoilState(userState);
+  const [logado, setLogado] = useRecoilState(userLogadoState);
   const buscarUsuario = useCallback(async () => {
     try {
       // ⚠️ Pegue o token DENTRO da função
@@ -23,11 +24,12 @@ export default function useUsuario() {
       });
 
       setUsuario(response.data);
+      setLogado(true);
     } catch (error) {
       console.error("Erro ao buscar usuário:", error);
       return null;
     }
-  }, [setUsuario]);
+  }, [setUsuario, setLogado]);
 
-  return { usuario, buscarUsuario };
+  return { usuario, buscarUsuario, logado, setLogado };
 }

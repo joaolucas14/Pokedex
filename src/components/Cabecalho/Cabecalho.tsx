@@ -5,44 +5,22 @@ import logout from "./img/logout.png";
 import { Link, useNavigate } from "react-router-dom";
 import ModalLogin from "../ModalLogin/ModalLogin";
 import ModalCadastro from "../ModalCadastro/ModalCadastro";
-import { useEffect, useState } from "react";
-import { IUsuario } from "../../interfaces/IUsuario";
 import useUsuario from "../../state/hooks/useUsuario";
 
 export default function Cabecalho() {
-  const token = sessionStorage.getItem("token");
   const navigate = useNavigate();
 
-  const [usuarioEstaLogado, setUsuarioEstaLogado] = useState<boolean>(
-    token != null
-  );
-  const [user, setUsuario] = useState<IUsuario | null>(null);
-  const { buscarUsuario, usuario } = useUsuario();
-
-  useEffect(() => {
-    const carregarUsuario = () => {
-      if (usuarioEstaLogado) {
-        buscarUsuario();
-        setUsuario(usuario);
-      } else {
-        setUsuario(null);
-      }
-    };
-
-    carregarUsuario();
-  }, [usuarioEstaLogado, buscarUsuario, usuario]);
+  const { buscarUsuario, usuario, setLogado, logado } = useUsuario();
 
   const aoEfetuarLogin = async () => {
-    setUsuarioEstaLogado(true);
+    setLogado(true);
     buscarUsuario();
-    setUsuario(usuario);
   };
 
   const EfetuarLogout = () => {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("usuario");
-    setUsuarioEstaLogado(false);
-    setUsuario(null);
+    setLogado(false);
     navigate("/");
   };
 
@@ -55,9 +33,9 @@ export default function Cabecalho() {
         </div>
       </Link>
       <div className="menu">
-        {usuarioEstaLogado && user ? (
+        {logado && usuario ? (
           <>
-            <p>{`Olá, ${user.username}`}</p>
+            <p>{`Olá, ${usuario?.username}`}</p>
 
             <Link to="/favoritos" className="link">
               <div className="entrar">
