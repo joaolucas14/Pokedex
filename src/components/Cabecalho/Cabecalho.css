@@ -30,6 +30,26 @@ header div {
   margin-right: 10px;
   letter-spacing: 1.3px;
 }
+
+.logout {
+  cursor: pointer;
+}
+
+.logout h2 {
+  color: white;
+  font-size: 20px;
+  margin-right: 10px;
+  letter-spacing: 1.3px;
+}
+.logout img {
+  width: 30px;
+  margin-right: 5px;
+}
+
+.logout:hover {
+  scale: 1.1;
+}
+
 .menu {
   display: flex;
   align-items: center;
@@ -58,6 +78,9 @@ header div {
     margin-bottom: 5px;
   }
   .link h2 {
+    display: none;
+  }
+  .logout h2 {
     display: none;
   }
 }

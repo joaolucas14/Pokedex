@@ -1,30 +1,29 @@
 import logo from "../../assets/imagens/logo.png";
 import "./Cabecalho.css";
 import favorito from "./img/favorito (2).png";
-import { Link } from "react-router-dom";
+import logout from "./img/logout.png";
+import { Link, useNavigate } from "react-router-dom";
 import ModalLogin from "../ModalLogin/ModalLogin";
 import ModalCadastro from "../ModalCadastro/ModalCadastro";
-import { useEffect, useState } from "react";
+import useUsuario from "../../state/hooks/useUsuario";
 
 export default function Cabecalho() {
-  const token = sessionStorage.getItem("token");
-  const [usuarioEstaLogado, setUsuarioEstaLogado] = useState<boolean>(
-    token != null
-  );
-  const [nomeUsuario, setNomeUsuario] = useState<string | null>(null);
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (usuarioEstaLogado) {
-      const usuario = sessionStorage.getItem("username");
-      if (usuario) {
-        setNomeUsuario(usuario);
-      }
-    }
-  }, [usuarioEstaLogado]);
+  const { buscarUsuario, usuario, setLogado, logado } = useUsuario();
 
-  const aoEfetuarLogin = () => {
-    setUsuarioEstaLogado(true);
+  const aoEfetuarLogin = async () => {
+    setLogado(true);
+    buscarUsuario();
   };
+
+  const EfetuarLogout = () => {
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("usuario");
+    setLogado(false);
+    navigate("/");
+  };
+
   return (
     <header>
       <Link to="/" className="link">
@@ -34,19 +33,22 @@ export default function Cabecalho() {
         </div>
       </Link>
       <div className="menu">
-        {usuarioEstaLogado && (
-          <Link to="/favoritos" className="link">
-            <div>
-              <p>{`Ola ${nomeUsuario}`}</p>
-            </div>
-            <div className="entrar">
-              <img src={favorito} alt="" />
-              <h2>Favoritos</h2>
-            </div>
-          </Link>
-        )}
+        {logado && usuario ? (
+          <>
+            <p>{`Olá, ${usuario?.username}`}</p>
 
-        {!usuarioEstaLogado && (
+            <Link to="/favoritos" className="link">
+              <div className="entrar">
+                <img src={favorito} alt="Favoritos" />
+                <h2>Favoritos</h2>
+              </div>
+            </Link>
+            <div className="logout" onClick={EfetuarLogout}>
+              <img src={logout} alt="Logout" />
+              <h2>Deslogar</h2>
+            </div>
+          </>
+        ) : (
           <>
             <ModalLogin aoEfetuarLogin={aoEfetuarLogin} />
             <ModalCadastro />

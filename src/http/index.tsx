@@ -23,3 +23,7 @@ http.interceptors.request.use(
 );
 
 export default http;
+
+export const api = axios.create({
+  baseURL: "http://localhost:8000",
+});
