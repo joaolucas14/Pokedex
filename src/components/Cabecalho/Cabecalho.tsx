@@ -6,8 +6,8 @@ import { Link, useNavigate } from "react-router-dom";
 import ModalLogin from "../ModalLogin/ModalLogin";
 import ModalCadastro from "../ModalCadastro/ModalCadastro";
 import { useEffect, useState } from "react";
-import { buscarUsuario } from "../../http/buscarUsuario";
 import { IUsuario } from "../../interfaces/IUsuario";
+import useUsuario from "../../state/hooks/useUsuario";
 
 export default function Cabecalho() {
   const token = sessionStorage.getItem("token");
@@ -16,25 +16,26 @@ export default function Cabecalho() {
   const [usuarioEstaLogado, setUsuarioEstaLogado] = useState<boolean>(
     token != null
   );
-  const [usuario, setUsuario] = useState<IUsuario | null>(null);
+  const [user, setUsuario] = useState<IUsuario | null>(null);
+  const { buscarUsuario, usuario } = useUsuario();
 
   useEffect(() => {
-    const carregarUsuario = async () => {
+    const carregarUsuario = () => {
       if (usuarioEstaLogado) {
-        const user = await buscarUsuario();
-        setUsuario(user);
+        buscarUsuario();
+        setUsuario(usuario);
       } else {
         setUsuario(null);
       }
     };
 
     carregarUsuario();
-  }, [usuarioEstaLogado]);
+  }, [usuarioEstaLogado, buscarUsuario, usuario]);
 
   const aoEfetuarLogin = async () => {
     setUsuarioEstaLogado(true);
-    const user = await buscarUsuario();
-    setUsuario(user);
+    buscarUsuario();
+    setUsuario(usuario);
   };
 
   const EfetuarLogout = () => {
@@ -54,9 +55,9 @@ export default function Cabecalho() {
         </div>
       </Link>
       <div className="menu">
-        {usuarioEstaLogado && usuario ? (
+        {usuarioEstaLogado && user ? (
           <>
-            <p>{`Olá, ${usuario.username}`}</p>
+            <p>{`Olá, ${user.username}`}</p>
 
             <Link to="/favoritos" className="link">
               <div className="entrar">
