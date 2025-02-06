@@ -57,9 +57,6 @@ export default function Cabecalho() {
         {usuarioEstaLogado && usuario ? (
           <>
             <p>{`Olá, ${usuario.username}`}</p>
-            {usuario.favoritos.map((favorito, index) => (
-              <p key={index}>{favorito}</p>
-            ))}
 
             <Link to="/favoritos" className="link">
               <div className="entrar">

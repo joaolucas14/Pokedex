@@ -116,6 +116,48 @@ server.get("/user/me", (req, res) => {
     .json({ id: user.id, username: user.username, favoritos: user.favoritos });
 });
 
+server.post("/user/favoritos", (req, res) => {
+  const { idFavorito } = req.body; // ID do item a ser favoritado
+
+  if (!idFavorito) {
+    return res.status(400).json({ message: "ID do favorito é obrigatório!" });
+  }
+
+  const userIndex = userdb.usuarios.findIndex((u) => u.id === req.user.id);
+
+  if (userIndex === -1) {
+    return res.status(404).json({ message: "Usuário não encontrado!" });
+  }
+
+  // Evita duplicatas
+  if (!userdb.usuarios[userIndex].favoritos.includes(idFavorito)) {
+    userdb.usuarios[userIndex].favoritos.push(idFavorito);
+    fs.writeFileSync("./usuarios.json", JSON.stringify(userdb, null, 2));
+  }
+
+  res.status(200).json({ favoritos: userdb.usuarios[userIndex].favoritos });
+});
+
+// ✅ Rota para remover um item dos favoritos
+server.delete("/user/favoritos/:id", (req, res) => {
+  const idFavorito = parseInt(req.params.id, 10); // ID do item a ser removido
+
+  const userIndex = userdb.usuarios.findIndex((u) => u.id === req.user.id);
+
+  if (userIndex === -1) {
+    return res.status(404).json({ message: "Usuário não encontrado!" });
+  }
+
+  // Remove o item da lista de favoritos
+  userdb.usuarios[userIndex].favoritos = userdb.usuarios[
+    userIndex
+  ].favoritos.filter((fav) => fav !== idFavorito);
+
+  fs.writeFileSync("./usuarios.json", JSON.stringify(userdb, null, 2));
+
+  res.status(200).json({ favoritos: userdb.usuarios[userIndex].favoritos });
+});
+
 server.use(router);
 
 server.listen(8000, () => {
