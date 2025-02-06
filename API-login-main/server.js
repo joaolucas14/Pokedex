@@ -13,84 +13,107 @@ server.use(jsonServer.defaults());
 
 const SECRET_KEY = "123456789";
 
+// Função para criar um token JWT
 function createToken(payload, expiresIn = "12h") {
   return jwt.sign(payload, SECRET_KEY, { expiresIn });
 }
 
+// Função para verificar um token JWT
 function verifyToken(token) {
-  return jwt.verify(token, SECRET_KEY, (err, decode) =>
-    decode !== undefined ? decode : err
-  );
+  try {
+    return jwt.verify(token, SECRET_KEY);
+  } catch (err) {
+    return null;
+  }
 }
 
+// Verifica se um usuário existe no banco
 function usuarioExiste(username, senha) {
-  return (
-    userdb.usuarios.findIndex(
-      (user) => user.username === username && user.senha === senha
-    ) !== -1
+  return userdb.usuarios.some(
+    (user) => user.username === username && user.senha === senha
   );
 }
 
+// ✅ Rota para registrar um novo usuário
 server.post("/public/registrar", (req, res) => {
   const { username, senha } = req.body;
+
   if (usuarioExiste(username, senha)) {
-    const status = 500;
-    const message = "Usuario já existente!";
-    res.status(status).json({ status, message });
-    return;
-  } else {
-    fs.readFile("./usuarios.json", (err, data) => {
-      if (err) {
-        const status = 401;
-        const message = err;
-        res.status(status).json({ status, message });
-        return;
-      }
-
-      const json = JSON.parse(data.toString());
-
-      const last_item_id =
-        json.usuarios.length > 0
-          ? json.usuarios[json.usuarios.length - 1].id
-          : 0;
-
-      json.usuarios.push({
-        id: last_item_id + 1,
-        username,
-        senha,
-        favoritos: [],
-      });
-      fs.writeFile("./usuarios.json", JSON.stringify(json), (err) => {
-        if (err) {
-          const status = 401;
-          const message = err;
-          res.status(status).json({ status, message });
-          return;
-        }
-      });
-      userdb = json;
-    });
+    return res.status(400).json({ message: "Usuário já existe!" });
   }
-  const access_token = createToken({ username, senha });
-  res.status(200).json({ access_token });
+
+  const novoUsuario = {
+    id:
+      userdb.usuarios.length > 0
+        ? userdb.usuarios[userdb.usuarios.length - 1].id + 1
+        : 1,
+    username,
+    senha,
+    favoritos: [],
+  };
+
+  userdb.usuarios.push(novoUsuario);
+  fs.writeFileSync("./usuarios.json", JSON.stringify(userdb, null, 2));
+
+  const access_token = createToken({ id: novoUsuario.id, username });
+
+  res
+    .status(201)
+    .json({ access_token, user: { id: novoUsuario.id, username } });
 });
 
+// ✅ Rota para login do usuário
 server.post("/public/login", (req, res) => {
   const { username, senha } = req.body;
-  if (!usuarioExiste(username, senha)) {
-    const status = 401;
-    const message = "Usuario ou senha incorretos!";
-    res.status(status).json({ status, message });
-    return;
+
+  const user = userdb.usuarios.find(
+    (user) => user.username === username && user.senha === senha
+  );
+
+  if (!user) {
+    return res.status(401).json({ message: "Usuário ou senha incorretos!" });
   }
-  const access_token = createToken({ username, senha });
-  let user = {
-    ...userdb.usuarios.find(
-      (user) => user.username === username && user.senha === senha
-    ),
-  };
-  delete user.senha;
-  res.status(200).json({ access_token, user });
+
+  const access_token = createToken({ id: user.id, username });
+
+  // Retorna os dados do usuário, sem a senha
+  res.status(200).json({
+    access_token,
+    user: { id: user.id, username, favoritos: user.favoritos },
+  });
+});
+
+// ✅ Middleware para proteger rotas privadas
+server.use((req, res, next) => {
+  if (req.path.startsWith("/user/")) {
+    const token = req.headers.authorization?.split(" ")[1];
+
+    if (!token) {
+      return res.status(401).json({ message: "Token não fornecido!" });
+    }
+
+    const decoded = verifyToken(token);
+
+    if (!decoded) {
+      return res.status(401).json({ message: "Token inválido ou expirado!" });
+    }
+
+    req.user = decoded;
+  }
+  next();
+});
+
+// ✅ Rota para obter os dados do usuário autenticado
+server.get("/user/me", (req, res) => {
+  const user = userdb.usuarios.find((u) => u.id === req.user.id);
+
+  if (!user) {
+    return res.status(404).json({ message: "Usuário não encontrado!" });
+  }
+
+  res
+    .status(200)
+    .json({ id: user.id, username: user.username, favoritos: user.favoritos });
 });
 
 server.use(router);
