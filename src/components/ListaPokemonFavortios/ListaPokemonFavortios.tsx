@@ -12,6 +12,8 @@ import Loading from "../Loading/Loading";
 import pikachu from "../../assets/imagens/pikachu.png";
 import useUsuario from "../../state/hooks/useUsuario";
 
+// teste
+
 export default function ListaPokemonFavoritos() {
   const [loading] = useRecoilState(loadingState);
   const { pegarPokemons, pokemonsCompletos, paginarPokemons } = usePokemons();
