@@ -1,6 +1,4 @@
-import axios from "axios";
-
-const API_URL = "http://localhost:8000";
+import http from "../http";
 
 export async function adicionarFavorito(idFavorito: number) {
   const token = sessionStorage.getItem("token");
@@ -9,8 +7,8 @@ export async function adicionarFavorito(idFavorito: number) {
     throw new Error("Usuário não autenticado");
   }
 
-  const response = await axios.post(
-    `${API_URL}/user/favoritos`,
+  const response = await http.post(
+    `/user/favoritos`,
     { idFavorito },
     { headers: { Authorization: `Bearer ${token}` } }
   );
@@ -25,26 +23,9 @@ export async function removerFavorito(idFavorito: number) {
     throw new Error("Usuário não autenticado");
   }
 
-  const response = await axios.delete(
-    `${API_URL}/user/favoritos/${idFavorito}`,
-    {
-      headers: { Authorization: `Bearer ${token}` },
-    }
-  );
-
-  return response.data.favoritos;
-}
-
-export async function buscarFavoritos() {
-  const token = sessionStorage.getItem("token");
-
-  if (!token) {
-    throw new Error("Usuário não autenticado");
-  }
-
-  const response = await axios.get(`${API_URL}/user/favoritos`, {
+  const response = await http.delete(`/user/favoritos/${idFavorito}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
-  return response.data.favoritos; // Retorna a lista de IDs dos favoritos
+  return response.data.favoritos;
 }

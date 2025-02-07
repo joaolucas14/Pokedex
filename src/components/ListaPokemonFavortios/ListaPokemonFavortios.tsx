@@ -42,7 +42,7 @@ export default function ListaPokemonFavoritos() {
         <Loading />
       ) : (
         <>
-          <h1 className="titulo">Meus Pokémon Favoritos</h1>
+          <h1 className="titulo">Pokémons Favoritos de {usuario?.username}</h1>
           {pokemonsFavoritos.length === 0 ? (
             <p className="mensagem">
               Nenhum Pokémon foi favoritado ainda
