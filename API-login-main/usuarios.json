@@ -1,1 +1,35 @@
-{"usuarios":[{"id":1,"username":"João","senha":"123","favoritos":[1,5]},{"id":2,"username":"Lucas","senha":"123","favoritos":[2,3]},{"id":3,"username":"João lucas","senha":"123","favoritos":[]}]}
+{
+  "usuarios": [
+    {
+      "id": 1,
+      "username": "João",
+      "senha": "123",
+      "favoritos": [
+        1,
+        6,
+        11,
+        3,
+        9,
+        10,
+        681,
+        12,
+        4,
+        212
+      ]
+    },
+    {
+      "id": 2,
+      "username": "Lucas",
+      "senha": "123",
+      "favoritos": [
+        3
+      ]
+    },
+    {
+      "id": 3,
+      "username": "João lucas",
+      "senha": "123",
+      "favoritos": []
+    }
+  ]
+}

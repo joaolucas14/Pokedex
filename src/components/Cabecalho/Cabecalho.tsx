@@ -21,6 +21,7 @@ export default function Cabecalho() {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("usuario");
     setLogado(false);
+    window.location.reload();
     navigate("/");
   };
 
@@ -35,7 +36,7 @@ export default function Cabecalho() {
       <div className="menu">
         {logado && usuario ? (
           <>
-            <p>{`Olá, ${usuario?.username}`}</p>
+            <p className="nome_usuario">{`Olá, ${usuario?.username}`}</p>
 
             <Link to="/favoritos" className="link">
               <div className="entrar">

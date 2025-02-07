@@ -112,7 +112,6 @@ export default function ListaPokemon() {
                         .join(" | ")}
                       altura={pokemon.height}
                       peso={pokemon.weight}
-                      pokemonFav={pokemon.favorito}
                     />
                   </div>
                 ))

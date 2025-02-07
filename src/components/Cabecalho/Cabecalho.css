@@ -31,6 +31,12 @@ header div {
   letter-spacing: 1.3px;
 }
 
+.nome_usuario {
+  color: white;
+  font-size: 20px;
+  align-self: center;
+}
+
 .logout {
   cursor: pointer;
 }

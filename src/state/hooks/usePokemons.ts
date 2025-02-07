@@ -1,7 +1,7 @@
 import { useRecoilState, useSetRecoilState } from "recoil";
 import { IPokemon } from "../../interfaces/IPokemon";
 import { http } from "../../api/http";
-import { listaFavoritosState, listaPokemonState, loadingState } from "../atom";
+import { listaPokemonState, loadingState } from "../atom";
 import { useCallback, useState } from "react";
 
 const usePokemons = () => {
@@ -10,7 +10,6 @@ const usePokemons = () => {
   const setLoading = useSetRecoilState(loadingState);
   const [filtro, setFiltro] = useState<string>("");
   const [tipo, setTipo] = useState<string>("");
-  const [favoritos, setFavoritos] = useRecoilState(listaFavoritosState);
 
   const aplicarFiltro = (filtro: string) => {
     setFiltro(filtro.toLowerCase());
@@ -18,22 +17,6 @@ const usePokemons = () => {
 
   const aplicarFiltroPorTipo = (tipo: string) => {
     setTipo(tipo);
-  };
-
-  const toggleFavorito = (id: number) => {
-    setFavoritos((prevFavoritos) =>
-      prevFavoritos.includes(id)
-        ? prevFavoritos.filter((favId) => favId !== id)
-        : [...prevFavoritos, id]
-    );
-
-    setListaPokemon((pokemons) =>
-      pokemons.map((pokemon) =>
-        pokemon.id === id
-          ? { ...pokemon, favorito: !pokemon.favorito }
-          : pokemon
-      )
-    );
   };
 
   const pegarPokemons = useCallback(async () => {
@@ -57,7 +40,6 @@ const usePokemons = () => {
 
             return {
               ...res.data,
-              favorito: favoritos.includes(res.data.id),
             };
           })
         );
@@ -73,7 +55,7 @@ const usePokemons = () => {
     } finally {
       setLoading(false);
     }
-  }, [pokemonsCompletos, setListaPokemon, setLoading, favoritos]);
+  }, [pokemonsCompletos, setListaPokemon, setLoading]);
 
   const pokemonsFiltrados = (pokemons: IPokemon[]) => {
     return pokemons
@@ -101,8 +83,6 @@ const usePokemons = () => {
     pokemonsCompletos,
     pokemonsFiltrados,
     paginarPokemons,
-    toggleFavorito,
-    favoritos,
   };
 };
 

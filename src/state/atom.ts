@@ -29,11 +29,6 @@ export const tiposPokemonState = atom<ITipoPokemon[]>({
   default: [],
 });
 
-export const listaFavoritosState = atom<number[]>({
-  key: "listaFavoritosState",
-  default: [],
-});
-
 export const variantesPokemonState = atom<IPokemon | null>({
   key: "variantesPokemonState",
   default: null,
