@@ -21,6 +21,7 @@ export default function Cabecalho() {
     sessionStorage.removeItem("token");
     sessionStorage.removeItem("usuario");
     setLogado(false);
+    window.location.reload();
     navigate("/");
   };
 

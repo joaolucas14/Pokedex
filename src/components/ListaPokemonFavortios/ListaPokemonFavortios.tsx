@@ -10,12 +10,14 @@ import "./ListaPokemonFavortios.css";
 import { useNavigate } from "react-router-dom";
 import Loading from "../Loading/Loading";
 import pikachu from "../../assets/imagens/pikachu.png";
+import useUsuario from "../../state/hooks/useUsuario";
 
 export default function ListaPokemonFavoritos() {
   const [loading] = useRecoilState(loadingState);
   const { pegarPokemons, pokemonsCompletos, paginarPokemons } = usePokemons();
   const [paginaAtual, setPaginaAtual] = useState(1);
   const navigate = useNavigate();
+  const { usuario } = useUsuario();
 
   useEffect(() => {
     if (pokemonsCompletos.length === 0) {
@@ -24,8 +26,8 @@ export default function ListaPokemonFavoritos() {
   }, [pegarPokemons, pokemonsCompletos.length]);
 
   // Filtra apenas os Pokémon favoritados
-  const pokemonsFavoritos = pokemonsCompletos.filter(
-    (pokemon) => pokemon.favorito
+  const pokemonsFavoritos = pokemonsCompletos.filter((pokemon) =>
+    usuario?.favoritos.includes(pokemon.id)
   );
 
   // Aplica a paginação apenas nos favoritos
@@ -76,7 +78,6 @@ export default function ListaPokemonFavoritos() {
                         .join(" | ")}
                       altura={pokemon.height}
                       peso={pokemon.weight}
-                      pokemonFav={pokemon.favorito}
                     />
                   </div>
                 ))}
