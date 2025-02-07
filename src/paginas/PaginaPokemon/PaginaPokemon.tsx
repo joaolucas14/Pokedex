@@ -9,21 +9,26 @@ import { formatarTexto } from "../../utils/FormatarTexto";
 import setaDireita from "../../assets/imagens/seta_direita.png";
 import setaEsquerda from "../../assets/imagens/seta_esquerda.png";
 import "./PaginaPokemon.css";
-import usePokemons from "../../state/hooks/usePokemons";
 import estrelaPreenchido from "../../assets/imagens/estrela (1).png";
 import estrela from "../../assets/imagens/estrela (2).png";
 import StatusBar from "../../components/StatusBar/StatusBar";
 import shinyImg from "../../assets/imagens/shyni.png";
 import useVariantesPokemons from "../../state/hooks/useVariantesPokemons";
+import {
+  adicionarFavorito,
+  removerFavorito,
+} from "../../utils/adicionarFavorito";
+import { useRecoilState } from "recoil";
+import { userState } from "../../state/atom";
 
 export default function PaginaPokemon() {
   const id = useParams<{ id: string }>().id;
   const { pokemon, buscarPokemonPorId } = useUnicoPokemon();
   const { pokemonDetalhes, buscarDetalhesPokemonPorNome } =
     usePokemonDetalhes();
-  const { toggleFavorito } = usePokemons();
   const { buscarVariantePorNome, variantePokemon, setVariantePokemon } =
     useVariantesPokemons();
+  const [usuario, setUser] = useRecoilState(userState);
 
   const navigate = useNavigate();
   let corDaletra = "white";
@@ -51,6 +56,25 @@ export default function PaginaPokemon() {
   const pegandoVariante = (evento: React.ChangeEvent<HTMLSelectElement>) => {
     buscarVariantePorNome(evento.target.value);
   };
+  const pokemonFav = usuario?.favoritos.includes(pokemon!.id);
+
+  const alternarFavorito = async (id: number) => {
+    if (usuario) {
+      try {
+        let novosFavoritos;
+        if (pokemonFav) {
+          novosFavoritos = await removerFavorito(id);
+        } else {
+          novosFavoritos = await adicionarFavorito(id);
+        }
+        setUser({ ...usuario, favoritos: novosFavoritos });
+      } catch (error) {
+        console.error("Erro ao alterar favoritos:", error);
+      }
+    } else {
+      alert("Você precisa estar logado para adicionar aos favoritos");
+    }
+  };
 
   const descricao =
     pokemonDetalhes?.flavor_text_entries.find(
@@ -76,9 +100,13 @@ export default function PaginaPokemon() {
           : TransformarPrimeiraLetraMaiscula(pokemon.name)}
         <span className="numero_id">
           {`Nª${pokemon.id}`}
-          <button onClick={() => toggleFavorito(pokemon.id)}>
+          <button onClick={() => alternarFavorito(pokemon.id)}>
             <img
-              src={pokemon.favorito ? estrelaPreenchido : estrela}
+              src={
+                usuario?.favoritos.includes(pokemon.id)
+                  ? estrelaPreenchido
+                  : estrela
+              }
               alt="estrela favorito"
               style={{ width: "30px" }}
             />
