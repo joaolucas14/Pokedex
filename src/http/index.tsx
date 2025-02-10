@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const http = axios.create({
-  baseURL: "https://api-login-one.vercel.app/",
+  baseURL: "http://localhost:8000",
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
@@ -25,5 +25,5 @@ http.interceptors.request.use(
 export default http;
 
 export const api = axios.create({
-  baseURL: "https://api-login-one.vercel.app/",
+  baseURL: "http://localhost:8000",
 });
