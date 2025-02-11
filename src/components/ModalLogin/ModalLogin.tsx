@@ -44,7 +44,7 @@ export default function ModalLogin({ aoEfetuarLogin }: PropsModalLoginUsuario) {
       <button onClick={openModal}>
         <div className="entrar">
           <img src={entrar} alt="" />
-          <h2>Entrar</h2>
+          <h2>Entre</h2>
         </div>
       </button>
       <Modal isOpen={isModalOpen} onClose={closeModal}>
