@@ -30,7 +30,7 @@ export default function Cabecalho() {
       <Link to="/" className="link">
         <div className="logo">
           <img src={logo} alt="Logo" />
-          <h1>Pokedéx</h1>
+          <h1>Pokédex</h1>
         </div>
       </Link>
       <div className="menu">
