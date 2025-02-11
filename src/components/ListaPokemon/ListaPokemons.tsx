@@ -65,7 +65,7 @@ export default function ListaPokemon() {
       ) : (
         <>
           <div className="titulo_input">
-            <h1 className="titulo">Lista de Pokémon</h1>
+            <h1 className="titulo">Lista Pokémons</h1>
             <Input
               aoDigitarFiltro={aoDigitarFiltro}
               filtroTexto={filtroTexto}

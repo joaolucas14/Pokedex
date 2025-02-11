@@ -10,6 +10,10 @@ header {
   justify-content: space-between;
   min-width: 98.7dvw;
 }
+header h2 {
+  font-family: var(--fontPrincipal);
+  font-weight: 400;
+}
 header img {
   width: 100px;
 }

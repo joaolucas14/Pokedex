@@ -111,7 +111,7 @@ export default function ModalCadastro() {
           </div>
           <div className="btn">
             <button className="button1">
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entrar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Cadastrar-se&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </button>
             {/* <button className="button2">Sign Up</button> */}
           </div>
