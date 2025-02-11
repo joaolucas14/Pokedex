@@ -1,3 +1,8 @@
+@font-face {
+  font-family: titulo;
+  src: url("../../assets/fonts/MasterKomikaExtrude-m2poP.otf");
+}
+
 header {
   display: flex;
   background-color: red;
@@ -19,6 +24,7 @@ header div {
   font-size: 40px;
   margin-left: 10px;
   letter-spacing: 1.3px;
+  font-family: titulo;
 }
 
 .link {
