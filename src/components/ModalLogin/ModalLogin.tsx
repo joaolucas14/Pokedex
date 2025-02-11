@@ -91,9 +91,8 @@ export default function ModalLogin({ aoEfetuarLogin }: PropsModalLoginUsuario) {
           </div>
           <div className="btn">
             <button className="button1">
-              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Login&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Entrar&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </button>
-            <button className="button2">Sign Up</button>
           </div>
         </form>
       </Modal>

@@ -93,8 +93,16 @@ export default function PaginaPokemon() {
   // console.log("pokemon:", pokemon);
   // console.log("pokemon detalhes:", pokemonDetalhes);
   return (
-    <div>
-      <h1>
+    <div className="main">
+      <h1
+        className="titulo"
+        style={{
+          color:
+            pokemonDetalhes?.color.name === "white"
+              ? "black"
+              : pokemonDetalhes?.color.name,
+        }}
+      >
         {variantePokemon
           ? TransformarPrimeiraLetraMaiscula(variantePokemon.name)
           : TransformarPrimeiraLetraMaiscula(pokemon.name)}

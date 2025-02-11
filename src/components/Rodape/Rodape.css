@@ -3,6 +3,8 @@ footer {
   padding: 10px;
   text-align: center;
   width: 98.7%;
+  font-family: var(--fontPrincipal);
+  font-weight: 300;
 }
 
 footer p {
